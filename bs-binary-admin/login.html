@@ -26,17 +26,28 @@
     <form class="register-form" action="signUp.php" name="register_form" method="post">
 			<input type="text" id="name" name="name" placeholder="name"/>
       <input type="text" id="ID" name="id" placeholder="ID"/>
-			<button type="button" onclick="id_check()" name="btn_idcheck">ID 중복체크</button>
+			<button type="button" onclick='id_check()' name="btn_idcheck">ID 중복체크</button>
 			<script>
 			function id_check(){
 				var InputId = document.getElementById("ID").value;
-<?php
-echo "alert('안')";
-?>
-				if(id !=""  ){
+				if(InputId ==""){
 						alert("아이디를 입력해주세요.")
-				} else if(){
-
+				} else {
+					$.ajax({
+						url				: 'idcheck.php',
+						data 			:	 {a : InputId},
+						type			: 'post',
+						datatype	:	'json',
+						success		: function(result) {
+							if(result.success == true) {
+								alert(result.data);
+								register_form.id.readOnly = true;
+								return;
+							}
+							alert(result.msg);
+							return;
+						}
+					});
 				}
 			}
 			</script>
@@ -65,10 +76,36 @@ echo "alert('안')";
 
       <p class="message">Already registered? <a href="#">Sign In</a></p>
     </form>
-    <form class="login-form" action="index.html" method="post">
-      <input type="text" placeholder="ID" name="login_ID"/>
-      <input type="password" placeholder="password" name="login_password"/>
-     <button type="submit" onclick="location.href='index.html'" >login</button>
+    <form class="login-form" method="post">
+      <input type="text" placeholder="ID" id="login_ID" name="login_ID"/>
+      <input type="password" placeholder="password" id="login_password" name="login_password"/>
+     <button onclick="login()" >login</button>
+		 <script type="text/javascript">
+		 	function login(){
+				var loginid =document.getElementById("login_ID").value;
+				var loginpassword = document.getElementById("login_password").value;
+				if(document.getElementById("login_ID").value==""){
+					alert("아이디를 입력해주세요.")
+				} else if(document.getElementById("login_password").value==""){
+					alert("비밀번호를 입력해주세요")
+				} else{
+					$.ajax({
+						url				: 'loginchk.php',
+						data 			:	 {id : loginid, password : loginpassword},
+						type			: 'post',
+						datatype	:	'json',
+						success		: function(result) {
+							if(result.success == true) {
+								location.href="index.html";
+								return;
+							}
+							alert(result.msg);
+							return;
+							}
+					});
+				}
+			}
+		 </script>
       <p class="message">Not registered? <a href="#">Create an account</a></p>
     </form>
   </div>
