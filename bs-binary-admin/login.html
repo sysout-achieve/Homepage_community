@@ -76,10 +76,10 @@
 
       <p class="message">Already registered? <a href="#">Sign In</a></p>
     </form>
-    <form class="login-form" method="post" action="index.html">
+    <form name="form" class="login-form" method="post" action="index.html">
       <input type="text" placeholder="ID" id="login_ID" name="login_ID"/>
       <input type="password" placeholder="password" id="login_password" name="login_password"/>
-     <button onclick="login()" >login</button>
+     <button onclick="login(); return false;">login</button>
 		 <script type="text/javascript">
 		 	function login(){
 				var loginid =document.getElementById("login_ID").value;
@@ -94,15 +94,16 @@
 						data 			:	 {id : loginid, password : loginpassword},
 						type			: 'post',
 						datatype	:	'json',
-						success		: function(result) {
-							if(result.success == true) {
-								document.form.submit();
-								location.href="index.html";
-								return;
-							}
-							alert(result.msg);
-							return;
-							}
+						success		: function(result){
+								if(result.success == true){
+									if(result.data==true){
+										document.form.submit();
+									}
+								}else{
+									alert(result.msg);
+									return false;
+								}
+						}
 					});
 				}
 			}

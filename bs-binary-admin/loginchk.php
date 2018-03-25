@@ -14,22 +14,17 @@ try{
 		if($row!=null)
 		{
 			$result['success']=true;
-		
-
+			$result['data']=true;
 		} else {
 			$result['success'] = false;
 			$result['msg'] = "아이디 혹은 비밀번호를 정확히 입력해주세요.";
 		}
-
  } catch(exception $e) {
-
 		$result['success']	= false;
  		$result['msg']		= "$id";
 		$result['code']		= $e->getCode();
-
 	}
 	finally {
 		echo json_encode($result, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
 	}
-
 ?>
