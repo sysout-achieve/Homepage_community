@@ -1,9 +1,24 @@
-﻿<!DOCTYPE html>
+<?php
+	require_once("dbconfig.php");
+
+	//$_GET['bno']이 있을 때만 $bno 선언
+	if(isset($_GET['bno'])) {
+		$bNo = $_GET['bno'];
+	}
+
+	if(isset($bNo)) {
+		$sql = 'select b_title, b_content, b_id from board_free where b_no = ' . $bNo;
+		$result = $db->query($sql);
+		$row = $result->fetch_assoc();
+	}
+?>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NOVA NETWORK</title>
+
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -76,7 +91,7 @@ echo "access ID : ";
 											 <a href="index.html"><i class="fa fa-dashboard fa-3x"></i> 내 정보</a>
 									 </li>
 										<li>
-											 <a href="ui.php"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
+											 <a class="active-menu" href="ui.php"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
 									 </li>
 									 <li>
 											 <a href="tab-panel.html"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
@@ -85,7 +100,7 @@ echo "access ID : ";
 												 <a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> 알고리즘 퀴즈</a>
 									 </li>
 										 <li>
-											 <a class="active-menu" href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
+											 <a href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
 									 </li>
 									 <li  >
 											 <a  href="form.html"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
@@ -108,8 +123,8 @@ echo "access ID : ";
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>BOARD - NOVA DEVELOPMENT</h2>
-                        <h5>Welcome. PLZ, UPLOAD YOUR DEVELOPMENT</h5>
+                     <h2>자유게시판 </h2>
+                        <h5>글 작성</h5>
 
                     </div>
                 </div>
@@ -119,16 +134,20 @@ echo "access ID : ";
 												 <!-- Advanced Tables -->
 												 <div class="panel panel-default">
 														 <div class="panel-heading">
-																	글 작성
+																	자유게시판 글 쓰기
 														 </div>
 														 <article class="boardArticle">
 
-		<h3>개발 정보 글쓰기</h3>
+
 
 		<div id="boardWrite">
 
-			<form action="table.html" method="post">
-
+			<form action="write_upd_bod_free.php" method="post">
+								<?php		//bno를 포스트로 write update에 보내야함
+								if(isset($bNo)) {
+									echo '<input type="hidden" name="bno" value="' . $bNo . '">';
+								}
+								?>
 				<table id="boardWrite">
 
 					<tbody>
@@ -137,15 +156,13 @@ echo "access ID : ";
 
 							<th scope="row"><label for="bID"> 작성자</label></th>
 
-							<td class="id"><input type="text" name="bID" id="bID"></td>
+							<td class="id"><?php
 
-						</tr>
+								if(isset($bNo)) {
 
-						<tr>
+									echo $row['b_id'];
 
-							<th scope="row"><label for="bPassword"> 비밀번호</label></th>
-
-							<td class="password"><input type="password" name="bPassword" id="bPassword"></td>
+								} else { ?><input type="text" name="bID" id="bID"><? } ?></td>
 
 						</tr>
 
@@ -153,7 +170,7 @@ echo "access ID : ";
 
 							<th scope="row"><label for="bTitle"> 제목</label></th>
 
-							<td class="title"><input type="text" size="100" name="bTitle" id="bTitle"></td>
+							<td class="title"><input type="text" size="100" name="bTitle" id="bTitle" value="<?php echo isset($row['b_title'])?$row['b_title']:null?>"></td>
 
 						</tr>
 
@@ -161,7 +178,7 @@ echo "access ID : ";
 
 							<th scope="row"><label for="bContent">내용</label></th>
 
-							<td><textarea cols="100" rows="20" name="bContent"  ></textarea></td>
+							<td><textarea cols="100" rows="20" name="bContent" id="bContent"><?php echo isset($row['b_content'])?$row['b_content']:null?></textarea></td>
 
 						</tr>
 
@@ -171,9 +188,9 @@ echo "access ID : ";
 
 				<div class="btnSet">
 
-					<button type="submit" class="btnSubmit btn">작성</button>
+					<button type="submit" class="btnSubmit btn"><?php echo isset($bNo)?'수정':'작성'?></button>
 
-					<a href="table.html" class="btnList btn">목록</a>
+					<a href="ui.php" class="btnList btn">목록</a>
 
 				</div>
 

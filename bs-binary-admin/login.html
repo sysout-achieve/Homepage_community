@@ -76,7 +76,7 @@
 
       <p class="message">Already registered? <a href="#">Sign In</a></p>
     </form>
-    <form class="login-form" method="post">
+    <form class="login-form" method="post" action="index.html">
       <input type="text" placeholder="ID" id="login_ID" name="login_ID"/>
       <input type="password" placeholder="password" id="login_password" name="login_password"/>
      <button onclick="login()" >login</button>
@@ -96,6 +96,7 @@
 						datatype	:	'json',
 						success		: function(result) {
 							if(result.success == true) {
+								document.form.submit();
 								location.href="index.html";
 								return;
 							}

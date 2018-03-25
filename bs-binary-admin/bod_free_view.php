@@ -1,9 +1,22 @@
-﻿<!DOCTYPE html>
+<?php
+	require_once("dbconfig.php");
+
+	$bNo = $_GET['bno'];
+
+$sql = 'select b_title, b_content, b_date, b_hit, b_id from board_free where b_no = ' . $bNo;
+$result = $db->query($sql);
+$row = $result->fetch_assoc();
+?>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
       <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NOVA NETWORK</title>
+		<!-- 게시판 css -->
+		<link rel="stylesheet" href="./css/normalize.css" />
+
+		<link rel="stylesheet" href="./css/board.css" />
 	<!-- BOOTSTRAP STYLES-->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
@@ -76,7 +89,7 @@ echo "access ID : ";
 											 <a href="index.html"><i class="fa fa-dashboard fa-3x"></i> 내 정보</a>
 									 </li>
 										<li>
-											 <a href="ui.php"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
+											 <a class="active-menu" href="ui.php"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
 									 </li>
 									 <li>
 											 <a href="tab-panel.html"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
@@ -85,7 +98,7 @@ echo "access ID : ";
 												 <a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> 알고리즘 퀴즈</a>
 									 </li>
 										 <li>
-											 <a class="active-menu" href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
+											 <a  href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
 									 </li>
 									 <li  >
 											 <a  href="form.html"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
@@ -108,89 +121,66 @@ echo "access ID : ";
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>BOARD - NOVA DEVELOPMENT</h2>
-                        <h5>Welcome. PLZ, UPLOAD YOUR DEVELOPMENT</h5>
+                     <h2>자유게시판 </h2>
 
-                    </div>
-                </div>
-                 <!-- /. ROW  -->
-								 <div class="row">
-										 <div class="col-md-12">
-												 <!-- Advanced Tables -->
-												 <div class="panel panel-default">
-														 <div class="panel-heading">
-																	글 작성
-														 </div>
-														 <article class="boardArticle">
+										 <article class="boardArticle">
+											 <div id="boardView">
+												 <div class="panel panel-primary">
+													 <div class="panel-heading">
+														 <!-- 제목 -->
+														 <div id="boardView">
+															 <span id="board_num">
+															 <h3 id="boardTitle"><? echo $bNo?>. &nbsp;<?php echo $row['b_title']?></h3>
+													 </div>
+												 </div>
+												 <div class="panel-footer">
+												 <!-- 작성자 -->
+												 <div id="boardInfo">
 
-		<h3>개발 정보 글쓰기</h3>
+															<span id="boardID">작성자: <?php echo $row['b_id']?></span>
 
-		<div id="boardWrite">
+															<hr size="1">
+															<span id="boardHit">조회: <?php echo $row['b_hit']?></span>
 
-			<form action="table.html" method="post">
+															</div>
+														</div>
 
-				<table id="boardWrite">
+													 <div class="panel-body">
+												 <!-- 내용 -->
 
-					<tbody>
+												 				<div id="boardContent"><?php echo $row['b_content']?></div>
+																<hr>
+													 </div>
+													 	 <div class="panel-footer">
 
-						<tr>
+													 <span id="boardDate">작성일: <?php echo $row['b_date']?></span>
+													 </div>
+												 </div>
 
-							<th scope="row"><label for="bID"> 작성자</label></th>
-
-							<td class="id"><input type="text" name="bID" id="bID"></td>
-
-						</tr>
-
-						<tr>
-
-							<th scope="row"><label for="bPassword"> 비밀번호</label></th>
-
-							<td class="password"><input type="password" name="bPassword" id="bPassword"></td>
-
-						</tr>
-
-						<tr>
-
-							<th scope="row"><label for="bTitle"> 제목</label></th>
-
-							<td class="title"><input type="text" size="100" name="bTitle" id="bTitle"></td>
-
-						</tr>
-
-						<tr>
-
-							<th scope="row"><label for="bContent">내용</label></th>
-
-							<td><textarea cols="100" rows="20" name="bContent"  ></textarea></td>
-
-						</tr>
-
-					</tbody>
-
-				</table>
-
-				<div class="btnSet">
-
-					<button type="submit" class="btnSubmit btn">작성</button>
-
-					<a href="table.html" class="btnList btn">목록</a>
-
-				</div>
-
-			</form>
-
-		</div>
-
-	</article>
-
-															</tr>
-												</table>
-											</div>
-									</div>
-								</div>
-							</div>
-
-
+													 <div class="btnSet">
+															 <form action="delete_freebod.php" method="post"  onsubmit="button_event(); return false;">
+															 		<?php		//bno를 포스트로 delete_freebod.php에 보내야함
+															 		if(isset($bNo)) {
+															 			echo '<input type="hidden" name="bno" value="' . $bNo . '">';
+															 		}
+															 		?>
+											 					<button class="btnSubmit btn"><a href="./write_free.php?bno=<?php echo $bNo?>">수정</a></button>
+																<button class="btnSubmit btn">삭제</button>
+																<script type="text/javascript">
+																		function button_event(){
+																			if (confirm("정말 삭제하시겠습니까??") == true){
+																			    document.form.submit();
+																			} else {
+																			    return false;
+																			}
+																		}
+																		</script>
+											 					<a href="ui.php" class="btnList btn">목록</a>
+															</form>
+									 				</div>
+												 </div>
+											 </div>
+										 </article>
 
 
 
