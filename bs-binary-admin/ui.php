@@ -144,7 +144,7 @@ echo "access ID : ";
 			</article>
 			<br></br>
 				<button type="submit" value="글 작성" onclick="location.href='write_free.php'">글 작성</button>
-     
+
      <!-- /. WRAPPER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->

@@ -94,7 +94,7 @@ echo "access ID : ";
 											 <a class="active-menu" href="ui.php"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
 									 </li>
 									 <li>
-											 <a href="tab-panel.html"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
+											 <a href="tab-panel.php"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
 									 </li>
 									 <li>
 												 <a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> 알고리즘 퀴즈</a>
