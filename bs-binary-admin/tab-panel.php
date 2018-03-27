@@ -1,11 +1,17 @@
-<?
+<?php
 session_start();
 if(!isset($_SESSION['user_id'])) {
 	echo "<meta http-equiv='refresh' content='0;url=login.html'>";
 	exit;
 }
 $user_id = $_SESSION['user_id'];
-?>
+	require_once("dbconfig.php");
+	date_default_timezone_set('Asia/Seoul');
+
+	$sql = 'select hw_no, hw_title, hw_image, hw_iteminfo, hw_id, hw_email, hw_method, hw_phone, hw_name, hw_like, hw_date, hw_price from bod_hw where hw_no = 2';
+		$result = $db->query($sql);
+		$row = $result->fetch_assoc()
+	?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -40,9 +46,9 @@ font-size: 16px;">
 <?php
 echo "access : ";
 
-echo $_SESSION['user_id'];
+echo $user_id;
 
-?> &nbsp; <a href="login.html" class="btn btn-danger square-btn-adjust">Logout</a> </div>
+?>  &nbsp; <a href="login.html" class="btn btn-danger square-btn-adjust">Logout</a> </div>
         </nav>
            <!-- /. NAV TOP  -->
                 <nav class="navbar-default navbar-side" role="navigation">
@@ -68,7 +74,7 @@ echo $_SESSION['user_id'];
 						<li>
 							<a  href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
 					</li>
-					<li  >
+					<li>
 							<a  href="form.html"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
 					</li>
 
@@ -95,65 +101,74 @@ echo $_SESSION['user_id'];
                 </div>
                  <!-- /. ROW  -->
                  <hr />
-								 <form action="hw_upload.php" method="post" enctype="multipart/form-data">
-								 <div class="panel panel-primary">
-								 		<div class="panel-heading">
 
-											<input size="50%" style="background-color: #white; color:black;" type="text" name="hw_title" placeholder="제품명"/>
-								 		</div>
-								 		<div class="panel-body">
-												<!--  이미지 저장 해야함-->
-											<p>
+            <div class="row">
+                <div class="col-md-4 col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+														<?php echo $row['hw_title']?>
 
-													저장할 이미지를 선택해주세요: <input type="file" name="fileToUpload" id="fileToUpload" value="이미지 선택">
+                        </div>
+                        <div class="panel-body">
+                            <p><img src="img/keyboard.png"></p>
+                        </div>
+                        <div class="panel-footer">
+													<form action="inner_tab.php" method="get">
+														<input type="hidden" name="sale_num" value="2">
+                      				10,000원
+														<button type="submit" onclick="location.href='inner_tab.php'">확인하기</button>
+														</form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            로지텍G G102 PRODIGY
+                        </div>
+                        <div class="panel-body">
+                            <p><img src="img/mouse.png"></p>
+                        </div>
+                        <div class="panel-footer">
+													<form action="inner_tab.php" method="get">
+														<input type="hidden" name="sale_num" value="5">
 
+                          	20,000원
+														<button type="submit" onclick="location.href='inner_tab.php'">확인하기</button>
+													</form>
+                        </div>
+											</div>
+										</div>
 
-												</p>
-								 		</div>
+												<div class="col-md-4 col-sm-4">
+										 			 <div class="panel panel-primary">
+										 					 <div class="panel-heading">
+										 							 지포스 GTX1060 STORM X Dual D5 6GB
+										 					 </div>
+										 					 <div class="panel-body">
+										 							 <p><img src="img/upload/grapic.png"></p>
+										 					 </div>
+										 					 <div class="panel-footer">
+										 						 <form action="inner_tab.php" method="get">
+										 							 <input type="hidden" name="sale_num" value="6">
 
-										<div class="row">
-									 <div class="col-md-12 col-sm-12">
-											 <div class="panel panel-default">
-													 <div class="panel-heading">
-															세부 정보
-													 </div>
-													 <div class="panel-body">
-
-
-															 <div class="tab-content">
-																	 <div class="tab-pane fade active in" id="home">
-																			 <h4>Item 정보</h4>
-																			 <p><textarea cols="100" rows="5" name="hw_Content" id="hw_Content" placeholder="제품 구입 시기, 제품 특징이나 스펙, 팔게 된 이유 등을 작성해주세요."></textarea></p>
-																	 </div>
-																	 <div class="tab-content" id="profile">
-																			 <h4>판매자 정보</h4>
-																			 <p>	<input size="70%" style="background-color: #white; color:black;" type="text" name="hw_writer" placeholder="작성자"/>
-																			 </p>
-																			 <p><input size="70%" style="background-color: #white; color:black;" type="text" name="hw_em" placeholder="email"/></p>
-																						<p><input size="70%" style="background-color: #white; color:black;" type="text" name="hw_phone" placeholder="phone_number"/>
-																				</p>
-																	 </div>
-																	 <div class="tab-content" id="messages">
-																			 <h4>거래 방법</h4>
-																			 <p><textarea cols="100" rows="5" name="hw_info" id="hw_info" placeholder="직거래 or 택배거래, 지역, 시간 등을 작성해주세요."></textarea></p>
-																	 </div>
+										 							 300,000원
+										 							 <button type="submit" onclick="location.href='inner_tab.php'">확인하기</button>
+										 						 </form>
 
 															 </div>
-													 </div>
-											 </div>
-									 </div>
-								 </div>
+															 	 </div>
+																 	 </div>
+																	 <hr>
+																	 <p></p>
 
-								 		<div class="panel-footer">
-								 		<input size="50%" style="background-color: #white; color:black;" type="text" name="hw_price" placeholder="가격"/>
-								 		</div>
-								 </div>
+																	 <div align="center">
+																		 <button class="panel-warning" onclick="location.href='hw_sale.php'">판매글 등록</button>
 
-								 <div align="center">
-								 <button type="submit">판매글 올리기</button><button>돌아가기</button>
-							 </div>
-</form>
-               <!-- 코드 삭제 시작 -->
+
+ 														 			</div>
+
+					     <!-- 코드 삭제 시작 -->
 
 							 <!-- 코드 삭제 끝 -->
                     <!-- /. ROW  -->
@@ -173,6 +188,7 @@ echo $_SESSION['user_id'];
     <script src="assets/js/jquery.metisMenu.js"></script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
+
 
 </body>
 </html>

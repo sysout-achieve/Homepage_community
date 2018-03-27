@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+<?
+session_start();
+if(!isset($_SESSION['user_id'])) {
+	echo "<meta http-equiv='refresh' content='0;url=login.html'>";
+	exit;
+}
+$user_id = $_SESSION['user_id'];
+?>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
       <meta charset="utf-8" />
@@ -33,6 +41,12 @@
 padding: 15px 50px 5px 50px;
 float: right;
 font-size: 16px;">
+<?php
+echo "access : ";
+
+echo $_SESSION['user_id'];
+
+?>
 
   &nbsp; <a href="login.html" class="btn btn-danger square-btn-adjust">Logout</a> </div>
         </nav>
@@ -49,10 +63,10 @@ font-size: 16px;">
 							<a href="index.html"><i class="fa fa-dashboard fa-3x"></i> 내 정보</a>
 					</li>
 					 <li>
-							<a href="ui.html"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
+							<a href="ui.php"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
 					</li>
 					<li>
-							<a href="tab-panel.html"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
+							<a href="tab-panel.php"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
 					</li>
 					<li>
 								<a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> 알고리즘 퀴즈</a>

@@ -1,6 +1,11 @@
 <?php
 	require_once("dbconfig.php");
-
+	session_start();
+	if(!isset($_SESSION['user_id'])) {
+		echo "<meta http-equiv='refresh' content='0;url=login.html'>";
+		exit;
+	}
+	$user_id = $_SESSION['user_id'];
 	//$_GET['bno']이 있을 때만 $bno 선언
 	if(isset($_GET['bno'])) {
 		$bNo = $_GET['bno'];
@@ -72,7 +77,9 @@ padding: 15px 50px 5px 50px;
 float: right;
 font-size: 16px;">
 <?php
-echo "access ID : ";
+echo "access : ";
+
+echo $_SESSION['user_id'];
 
 ?>
   &nbsp; <a href="login.html" class="btn btn-danger square-btn-adjust">Logout</a> </div>
@@ -158,11 +165,7 @@ echo "access ID : ";
 
 							<td class="id"><?php
 
-								if(isset($bNo)) {
-
-									echo $row['b_id'];
-
-								} else { ?><input type="text" name="bID" id="bID"><? } ?></td>
+							echo 	$user_id ?></td>
 
 						</tr>
 

@@ -1,3 +1,11 @@
+<?
+session_start();
+if(!isset($_SESSION['user_id'])) {
+	echo "<meta http-equiv='refresh' content='0;url=login.html'>";
+	exit;
+}
+$user_id = $_SESSION['user_id'];
+?>
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -30,10 +38,12 @@ padding: 15px 50px 5px 50px;
 float: right;
 font-size: 16px;">
 <?php
-echo "access ID : ";
+echo "access : ";
+
+echo $_SESSION['user_id'];
 
 ?>
-<a href="#" class="btn btn-danger square-btn-adjust">Logout</a> </div>
+&nbsp; <a href="#" class="btn btn-danger square-btn-adjust">Logout</a> </div>
         </nav>
            <!-- /. NAV TOP  -->
                 <nav class="navbar-default navbar-side" role="navigation">
@@ -49,10 +59,10 @@ echo "access ID : ";
 											 <a href="index.html"><i class="fa fa-dashboard fa-3x"></i> 내 정보</a>
 									 </li>
 										<li>
-											 <a href="ui.html"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
+											 <a href="ui.php"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
 									 </li>
 									 <li>
-											 <a href="tab-panel.html"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
+											 <a href="tab-panel.php"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
 									 </li>
 									 <li>
 												 <a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> 알고리즘 퀴즈</a>
@@ -87,7 +97,7 @@ echo "access ID : ";
                 </div>
                  <!-- /. ROW  -->
                  <hr />
-              
+
                 <!-- /. ROW  -->
     </div>
              <!-- /. PAGE INNER  -->

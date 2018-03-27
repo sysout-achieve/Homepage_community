@@ -1,7 +1,12 @@
 <?php
 
 	require_once("dbconfig.php");
-
+	session_start();
+	if(!isset($_SESSION['user_id'])) {
+		echo "<meta http-equiv='refresh' content='0;url=login.html'>";
+		exit;
+	}
+	$user_id = $_SESSION['user_id'];
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -41,7 +46,9 @@ padding: 15px 50px 5px 50px;
 float: right;
 font-size: 16px;">
 <?php
-echo "access ID : ";
+echo "access : ";
+
+echo $_SESSION['user_id'];
 
 ?>
 &nbsp; <a href="#" class="btn btn-danger square-btn-adjust">Logout</a> </div>
@@ -62,7 +69,7 @@ echo "access ID : ";
 							<a class="active-menu" href="ui.php"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
 					</li>
 					<li>
-							<a  href="tab-panel.html"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
+							<a  href="tab-panel.php"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
 					</li>
 				 <li>
 							 <a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> 알고리즘 퀴즈</a>
@@ -93,7 +100,7 @@ echo "access ID : ";
                      <h2>자유 게시판</h2>
 <hr>
                         <h6>  [게시판 이용규칙]<br></br> 미풍양속을 해치지 않는 범위 내에서 자유롭게 작성해주세요. <br></br>
-단, 질문글은 질문/요청게시판을 이용해주세요. </h6>
+단, 질문글은 개발정보게시판을 이용해주세요. </h6>
 
                     </div>
                 </div>

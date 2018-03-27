@@ -1,6 +1,13 @@
 <?php
 	require_once("dbconfig.php");
 
+	session_start();
+	if(!isset($_SESSION['user_id'])) {
+		echo "<meta http-equiv='refresh' content='0;url=login.html'>";
+		exit;
+	}
+	$user_id = $_SESSION['user_id'];
+
 	$bNo = $_GET['bno'];
 	if(!empty($bNo) && empty($_COOKIE['board_free_' . $bNo])) {
 			$sql = 'update board_free set b_hit = b_hit + 1 where b_no = ' . $bNo;		//조회수를 1 올리는 커리
@@ -83,7 +90,9 @@ padding: 15px 50px 5px 50px;
 float: right;
 font-size: 16px;">
 <?php
-echo "access ID : ";
+echo "access : ";
+
+echo $_SESSION['user_id'];
 
 ?>
   &nbsp; <a href="login.html" class="btn btn-danger square-btn-adjust">Logout</a> </div>
@@ -257,7 +266,7 @@ echo "access ID : ";
 							<!-- 댓글달기 form -->
 							<hr>
 
-								<div class="col-md-12 col-sm-2">
+								<div class="col-md-12 col-sm-1">
 									 <div class="panel panel-default">
 											 <div class="panel-heading">
 													 댓글달기
@@ -265,12 +274,11 @@ echo "access ID : ";
 											 <div class="panel-body">
 												 <form name="comment_form" action="comment_update.php" method="post">
 													 <input type="hidden" name="bno" value="<?php echo $bNo?>">
-												 				<label for="coId">아이디</label><input type="text" name="coId" id="coId">
-																		<label for="coPassword">비밀번호</label><input type="password" name="coPassword" id="coPassword">
-													<p> </p>
-													 <hr>
+												 				<label for="coId">작성자 </label> &nbsp <? echo $_SESSION['user_id']; ?>
+			 													<hr>
 													<label for="coContent">내용</label>
-											<textarea cols="150" rows="3" name="coContent" id="coContent"></textarea>
+													<br>
+											<textarea cols="140" rows="3" name="coContent" id="coContent"></textarea>
 											 </div>
 											 <div class="panel-footer">
 													  <button type="submit" class="btnSubmit btn" > 댓글 달기 </button>
