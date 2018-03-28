@@ -42,7 +42,7 @@ echo "access : ";
 
 echo $_SESSION['user_id'];
 
-?> &nbsp; <a href="login.html" class="btn btn-danger square-btn-adjust">Logout</a> </div>
+?> &nbsp; <a href="logout.php" class="btn btn-danger square-btn-adjust">Logout</a> </div>
         </nav>
            <!-- /. NAV TOP  -->
                 <nav class="navbar-default navbar-side" role="navigation">
@@ -102,7 +102,7 @@ echo $_SESSION['user_id'];
 											<input size="50%" style="background-color: #white; color:black;" type="text" name="hw_title" placeholder="제품명"/>
 								 		</div>
 								 		<div class="panel-body">
-												<!--  이미지 저장 해야함-->
+												<!--  이미지 저장 -->
 											<p>
 
 													저장할 이미지를 선택해주세요: <input type="file" name="fileToUpload" id="fileToUpload" value="이미지 선택">
@@ -127,7 +127,8 @@ echo $_SESSION['user_id'];
 																	 </div>
 																	 <div class="tab-content" id="profile">
 																			 <h4>판매자 정보</h4>
-																			 <p>	<input size="70%" style="background-color: #white; color:black;" type="text" name="hw_writer" placeholder="작성자"/>
+																			  <p><input type="hidden" name="hw_writer" value="<? echo $_SESSION['user_id'] ?>"></input>
+																				 작성자 : &nbsp <? echo $user_id?>
 																			 </p>
 																			 <p><input size="70%" style="background-color: #white; color:black;" type="text" name="hw_em" placeholder="email"/></p>
 																						<p><input size="70%" style="background-color: #white; color:black;" type="text" name="hw_phone" placeholder="phone_number"/>

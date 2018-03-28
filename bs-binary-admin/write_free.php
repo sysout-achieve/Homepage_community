@@ -82,7 +82,7 @@ echo "access : ";
 echo $_SESSION['user_id'];
 
 ?>
-  &nbsp; <a href="login.html" class="btn btn-danger square-btn-adjust">Logout</a> </div>
+  &nbsp; <a href="logout.php" class="btn btn-danger square-btn-adjust">Logout</a> </div>
         </nav>
            <!-- /. NAV TOP  -->
                 <nav class="navbar-default navbar-side" role="navigation">
@@ -163,9 +163,9 @@ echo $_SESSION['user_id'];
 
 							<th scope="row"><label for="bID"> 작성자</label></th>
 
-							<td class="id"><?php
-
-							echo 	$user_id ?></td>
+							<td class="id">
+								<input type="hidden" name="bID" value="<?php echo $user_id ?>"></input>
+								<?php 	echo 	$user_id ?></td>
 
 						</tr>
 

@@ -95,7 +95,7 @@ echo "access : ";
 echo $_SESSION['user_id'];
 
 ?>
-  &nbsp; <a href="login.html" class="btn btn-danger square-btn-adjust">Logout</a> </div>
+  &nbsp; <a href="logout.php" class="btn btn-danger square-btn-adjust">Logout</a> </div>
         </nav>
            <!-- /. NAV TOP  -->
                 <nav class="navbar-default navbar-side" role="navigation">
@@ -184,9 +184,11 @@ echo $_SESSION['user_id'];
 																if(isset($bNo)) {
 																	echo '<input type="hidden" name="bno" value="' . $bNo . '">';
 																}
+																	 if($row['b_id'] == $_SESSION['user_id']){
 																?>
-															<button class="btnSubmit btn"><a href="./write_free.php?bno=<?php echo $bNo?>">수정</a></button>
+															<button class="btnSubmit btn" onclick=""><a href="./write_free.php?bno=<?php echo $bNo?>">수정</a></button>
 															<button class="btnSubmit btn">삭제</button>
+
 															<script type="text/javascript">
 																	function button_event(){
 																		if (confirm("정말 삭제하시겠습니까??") == true){
@@ -196,6 +198,9 @@ echo $_SESSION['user_id'];
 																		}
 																	}
 																	</script>
+																	<?
+																				}
+																	?>
 															<a href="ui.php" class="btnList btn">목록</a>
 														</form>
 
@@ -211,6 +216,8 @@ echo $_SESSION['user_id'];
 																														$result = $db->query($sql);
 																													?>
 																													<div id="commentView">
+																																		<form action="comment_update.php" method="post">
+																																				<input type="hidden" name="bno" value="<?php echo $bNo?>">
 																														<?php
 																															while($row = $result->fetch_assoc()) {
 																														?>
@@ -231,6 +238,7 @@ echo $_SESSION['user_id'];
 																															 <div>
 																																 <span>작성자: <?php echo $row['co_id']?></span>
 																																 <p><?php echo $row['co_content']?></p>
+
 																																 <?php
 																																	 $sql2 = 'select * from comment_free where co_no!=co_order and co_order=' . $row['co_no'];
 																																	 $result2 = $db->query($sql2);
@@ -238,25 +246,47 @@ echo $_SESSION['user_id'];
 																																 ?>
 																																 <ul class="twoDepth">
 																																	 <li>
+																																		 <div id="co_<?php echo $row['co_no']?>" class="commentSet">
+
+
 																																		 <div>
 																																			 <span>작성자: <?php echo $row2['co_id']?></span>
 																																			 <p><?php echo $row2['co_content'] ?></p>
+
 																																		 </div>
+
 																																	 </li>
 																																 </ul>
 																																 <?php
 																																	 }
 																																 ?>
 																															 </li>
+
 																														 </ul>
-																														 <?php } ?>
+
 																													 </div>
 
 													 										 					 <div class="panel-footer">
 
-													 										 							 <!-- 내용 -->
+													 										 							 <!-- 댓글 작성 시간 -->
+																														 <div class="commentBtn">
+
+																																					 <a href="#" class="comt write">댓글</a>
+																																					 <?
+																																					 if($row['co_id'] == $_SESSION['user_id']){
+																																					 ?>
+																																					 <a href="#" class="comt modify">수정</a>
+																																					 <a href="#" class="comt delete">삭제</a>
+																																					 <?
+																																				 		}
+																																					 ?>
+																																				 </div>
 													 										 						 </form>
 
+																												<div align="right">	 <?php echo $row['co_date'];?></div>
+																												<?
+																											}
+																												?>
 													 															 </div>
 													 															 	 </div>
 
@@ -273,7 +303,8 @@ echo $_SESSION['user_id'];
 											 </div>
 											 <div class="panel-body">
 												 <form name="comment_form" action="comment_update.php" method="post">
-													 <input type="hidden" name="bno" value="<?php echo $bNo?>">
+													 <input type="hidden" name="bno" value="<?php echo $bNo?>"></input>
+													 <input type="hidden" name="coId" value="<? echo $_SESSION['user_id'] ?>"></input>
 												 				<label for="coId">작성자 </label> &nbsp <? echo $_SESSION['user_id']; ?>
 			 													<hr>
 													<label for="coContent">내용</label>

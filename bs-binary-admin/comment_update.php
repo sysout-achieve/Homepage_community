@@ -1,12 +1,14 @@
 <?php
  require_once('dbconfig.php');
+ date_default_timezone_set('Asia/Seoul');
 
  $bNo = $_POST['bno'];
  $coId = $_POST['coId'];
  $coPassword = $_POST['coPassword'];
  $coContent = $_POST['coContent'];
+ $date = date('Y-m-d H:i:s');
 
-$sql = 'insert into comment_free values(null, ' .$bNo . ', null, "' . $coContent . '", "' . $coId . '", password("' . $coPassword . '"))';
+$sql = 'insert into comment_free values(null, ' .$bNo . ', null, "' . $coContent . '", "' . $coId . '",  "' . $date . '")';
  $result = $db->query($sql);
  $coNo = $db->insert_id;
  $sql = 'update comment_free set co_order = co_no where co_no = ' . $coNo;
