@@ -48,7 +48,7 @@ echo "access : ";
 
 echo $user_id;
 
-?>  &nbsp; <a href="login.html" class="btn btn-danger square-btn-adjust">Logout</a> </div>
+?>  &nbsp; <a href="logout.php" class="btn btn-danger square-btn-adjust">Logout</a> </div>
         </nav>
            <!-- /. NAV TOP  -->
                 <nav class="navbar-default navbar-side" role="navigation">
@@ -97,75 +97,66 @@ echo $user_id;
                      <h2>Hardware 장터 </h2>
                         <h5></h5>
 
-                    </div>
-                </div>
+
                  <!-- /. ROW  -->
                  <hr />
 
-            <div class="row">
-                <div class="col-md-4 col-sm-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
+								 <?php
+	 							date_default_timezone_set('Asia/Seoul');
+
+	 								$sql = 'select * from bod_hw order by hw_no desc';
+	 								$result = $db->query($sql);
+	 								while($row = $result->fetch_assoc())
+	 								{
+	 									$datetime = explode(' ', $row['hw_date']);
+	 									$date = $datetime[0];
+	 									$time = $datetime[1];
+	 									if($date == Date('Y-m-d')){
+	 										$row['hw_date'] = $time;
+	 									}else{
+	 										$row['hw_date'] = $date;
+										}
+	 							?>
+
+
+									<div class="col-md-4 col-sm-4" >
+										<form name="inner_tab" action="inner_tab.php" method="get">
+												<input type="hidden" name="sale_num" value="<?php echo $row['hw_no']?>">
+												<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">
+													<div class="panel-heading">
 														<?php echo $row['hw_title']?>
+														</div>
 
-                        </div>
-                        <div class="panel-body">
-                            <p><img src="img/keyboard.png"></p>
-                        </div>
-                        <div class="panel-footer">
-													<form action="inner_tab.php" method="get">
-														<input type="hidden" name="sale_num" value="2">
-                      				10,000원
-														<button type="submit" onclick="location.href='inner_tab.php'">확인하기</button>
-														</form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-4">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">
-                            로지텍G G102 PRODIGY
-                        </div>
-                        <div class="panel-body">
-                            <p><img src="img/mouse.png"></p>
-                        </div>
-                        <div class="panel-footer">
-													<form action="inner_tab.php" method="get">
-														<input type="hidden" name="sale_num" value="5">
+														<div class="panel-body">
+															<?php echo $row['hw_date']?>
+																<p>
+																	<img src=<?php echo $row['hw_image']?> height="250" width="200">  </p>
+														</div>
+														<div class="panel-footer">
 
-                          	20,000원
-														<button type="submit" onclick="location.href='inner_tab.php'">확인하기</button>
-													</form>
-                        </div>
-											</div>
+
+															가격: &nbsp		<?php echo $row['hw_price']?>&nbsp&nbsp	&nbsp	&nbsp	&nbsp		&nbsp
+														</div>
 										</div>
+										</form>
+									</div>
 
-												<div class="col-md-4 col-sm-4">
-										 			 <div class="panel panel-primary">
-										 					 <div class="panel-heading">
-										 							 지포스 GTX1060 STORM X Dual D5 6GB
-										 					 </div>
-										 					 <div class="panel-body">
-										 							 <p><img src="img/upload/grapic.png"></p>
-										 					 </div>
-										 					 <div class="panel-footer">
-										 						 <form action="inner_tab.php" method="get">
-										 							 <input type="hidden" name="sale_num" value="6">
+	 							<?php
+	 								}
+	 							?>
+							</div>
+						</div>
+							<hr>
+							<p></p>
 
-										 							 300,000원
-										 							 <button type="submit" onclick="location.href='inner_tab.php'">확인하기</button>
-										 						 </form>
+							<div align="center">
+								<button class="panel-warning" onclick="location.href='hw_sale.php'">판매글 등록</button>
 
-															 </div>
-															 	 </div>
-																 	 </div>
-																	 <hr>
-																	 <p></p>
+						</div>
+					</div>
 
-																	 <div align="center">
-																		 <button class="panel-warning" onclick="location.href='hw_sale.php'">판매글 등록</button>
-
-
+</div>
+</div>
  														 			</div>
 
 					     <!-- 코드 삭제 시작 -->
