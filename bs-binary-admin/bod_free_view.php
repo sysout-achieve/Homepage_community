@@ -186,11 +186,22 @@ echo $_SESSION['user_id'];
 																}
 																	 if($row['b_id'] == $_SESSION['user_id']){
 																?>
-															<button class="btnSubmit btn" onclick=""><a href="./write_free.php?bno=<?php echo $bNo?>">수정</a></button>
-															<button class="btnSubmit btn">삭제</button>
+															<button class="btn" onclick="button_event_modify(); return false;">수정</button>
 
 															<script type="text/javascript">
-																	function button_event(){
+																	function button_event_modify(){
+																		if(confirm("수정하시겠습니까?")==true){
+																			location.href='./write_free.php?bno=<?php echo $bNo?>';
+																		}
+																		else{
+																			return false;
+																		}
+																	}
+															</script>
+
+															<button class="btnSubmit btn" onclick="button_event_delete(); return false;">삭제</button>
+															<script type="text/javascript">
+																	function button_event_delete(){
 																		if (confirm("정말 삭제하시겠습니까??") == true){
 																				document.form.submit();
 																		} else {
@@ -271,7 +282,7 @@ echo $_SESSION['user_id'];
 													 										 							 <!-- 댓글 작성 시간 -->
 																														 <div class="commentBtn">
 
-																																					 <a href="#" class="comt write">댓글</a>
+
 																																					 <?
 																																					 if($row['co_id'] == $_SESSION['user_id']){
 																																					 ?>
@@ -280,7 +291,9 @@ echo $_SESSION['user_id'];
 																																					 <?
 																																				 		}
 																																					 ?>
+
 																																				 </div>
+
 													 										 						 </form>
 
 																												<div align="right">	 <?php echo $row['co_date'];?></div>
@@ -288,6 +301,7 @@ echo $_SESSION['user_id'];
 																											}
 																												?>
 													 															 </div>
+
 													 															 	 </div>
 
 																														 <!-- 댓글 내용 확인 끝. -->
@@ -302,7 +316,7 @@ echo $_SESSION['user_id'];
 													 댓글달기
 											 </div>
 											 <div class="panel-body">
-												 <form name="comment_form" action="comment_update.php" method="post">
+												 <form name="comment_form" id="comment_form" action="comment_update.php" method="post">
 													 <input type="hidden" name="bno" value="<?php echo $bNo?>"></input>
 													 <input type="hidden" name="coId" value="<? echo $_SESSION['user_id'] ?>"></input>
 												 				<label for="coId">작성자 </label> &nbsp <? echo $_SESSION['user_id']; ?>
@@ -312,7 +326,8 @@ echo $_SESSION['user_id'];
 											<textarea cols="140" rows="3" name="coContent" id="coContent"></textarea>
 											 </div>
 											 <div class="panel-footer">
-													  <button type="submit" class="btnSubmit btn" > 댓글 달기 </button>
+													  <button class="btnSubmit btn" > 댓글 달기 </button>
+
 													</form>
 
 										 </div>
@@ -324,7 +339,87 @@ echo $_SESSION['user_id'];
 											<hr>
 											<p></p>
 
+											<!-- <script>
+										 	$(document).ready(function () {
+										 		var action = '';
+										 		$('#commentView').delegate('.comt', 'click', function () {
+										 			//현재 위치에서 가장 가까운 commentSet 클래스를 변수에 넣는다.
+										 			var thisParent = $(this).parents('.commentSet');
+										 			//현재 작성 내용을 변수에 넣고, active 클래스 추가.
+										 			var commentSet = thisParent.html();
+										 			thisParent.addClass('active');
+										 			//취소 버튼
+										 			var commentBtn = '<a href="#" class="addComt cancel">취소</a>';
+										 			//버튼 삭제 & 추가
+										 			$('.comt').hide();
+										 			$(this).parents('.commentBtn').append(commentBtn);
+										 			//commentInfo의 ID를 가져온다.
+										 			var co_no = thisParent.attr('id');
+										 			//전체 길이에서 3("co_")를 뺀 나머지가 co_no
+										 			co_no = co_no.substr(3, co_no.length);
+										 			//변수 초기화
+										 			var comment = '';
+										 			var coId = '';
+										 			var coContent = '';
+										 			if($(this).hasClass('write')) {
+										 				//댓글 쓰기
+										 				action = 'w';
+										 				//ID 영역 출력
+										 				coId = '<input type="text" name="coId" id="coId">';
+										 			} else if($(this).hasClass('modify')) {
+										 				//댓글 수정
+										 				action = 'u';
+										 				coId =thisParent.find('.coId').text();
+										 				var coContent = thisParent.find('.commentContent').text();
+										 			} else if($(this).hasClass('delete')) {
+										 				//댓글 삭제
+										 				action = 'd';
+										 			}
+										 				comment += '<div class="writeComment">';
+										 				comment += '	<input type="hidden" name="w" value="' + action + '">';
+										 				comment += '	<input type="hidden" name="co_no" value="' + co_no + '">';
+										 				comment += '	<table>';
+										 				comment += '		<tbody>';
+										 				if(action !== 'd') {
+										 					comment += '	<tr>';
+										 					comment += '	<th scope="row"><label for="coId">아이디</label></th>';
+										 					comment += '	<td>' + coId + '</td>';
+										 					comment += '	</tr>';
+										 				}
 
+										 				comment += '			<tr>';
+										 				comment += '				<th scope="row">';
+										 				comment += '			<label for="coPassword">비밀번호</label></th>';
+										 				comment += '				<td><input type="password" name="coPassword" id="coPassword"></td>';
+										 				comment += '			</tr>';
+										 				if(action !== 'd') {
+										 					comment += '			<tr>';
+										 					comment += '				<th scope="row"><label for="coContent">내용</label></th>';
+										 					comment += '				<td><textarea name="coContent" id="coContent">' + coContent + '</textarea></td>';
+										 					comment += '			</tr>';
+										 				}
+										 				comment += '		</tbody>';
+										 				comment += '	</table>';
+										 				comment += '	<div class="btnSet">';
+										 				comment += '		<input type="submit" value="확인">';
+										 				comment += '	</div>';
+										 				comment += '</div>';
+
+										 				thisParent.after(comment);
+										 			return false;
+										 		});
+
+										 		$('#commentView').delegate(".cancel", "click", function () {
+										 				$('.writeComment').remove();
+										 				$('.commentSet.active').removeClass('active');
+										 				$('.addComt').remove();
+										 				$('.comt').show();
+										 			return false;
+										 		});
+										 	});
+										  </script> -->
+</div>
+</div>
 												 </div>
 											 </div>
 										 </div>
