@@ -51,7 +51,7 @@ echo "access : ";
 
 echo $_SESSION['user_id'];
 
-?> &nbsp; <a href="login.html" class="btn btn-danger square-btn-adjust">Logout</a> </div>
+?> &nbsp; <a href="logout.php" class="btn btn-danger square-btn-adjust">Logout</a> </div>
         </nav>
            <!-- /. NAV TOP  -->
                 <nav class="navbar-default navbar-side" role="navigation">
@@ -101,9 +101,11 @@ echo $_SESSION['user_id'];
                         <h5></h5>
 
                     </div>
-                </div>
+
                  <!-- /. ROW  -->
                  <hr />
+
+								 <div class="col-md-12 col-sm-12">
 								 <div class="panel panel-primary">
 								 		<div class="panel-heading">
 											<?php
@@ -111,18 +113,17 @@ echo $_SESSION['user_id'];
 											#echo $num;
 
 
-
+												echo $row['hw_no']. ". &nbsp" ;
 												echo $row['hw_title'];
 											?>
 
 								 		</div>
 								 		<div class="panel-body">
-
+											<? echo $row['hw_date']; ?>
 								 				<p><img src=<? echo $row['hw_image']; ?>></p>
 								 		</div>
 
-										<div class="row">
-									 <div class="col-md-12 col-sm-12">
+
 											 <div class="panel panel-default">
 													 <div class="panel-heading">
 															세부 정보
@@ -153,12 +154,12 @@ echo $_SESSION['user_id'];
 																	 </div>
 																	 <div class="tab-pane fade" id="messages">
 																			 <h4>거래 방법</h4>
-																			 <p><? echo $row['hw_method']; ?></p>
+																			 <p><? echo $row['hw_name'];?></p>
+																			  <p><? echo $row['hw_method']; ?></p>
 																	 </div>
 
 															 </div>
-													 </div>
-											 </div>
+
 									 </div>
 								 </div>
 
@@ -166,15 +167,73 @@ echo $_SESSION['user_id'];
 								 		<? echo $row['hw_price']; ?>
 
 								 		</div>
-								 </div>
+								 </div>		 <div class="btnSet">
+													<form action="delete_hw_bod.php" method="post"  onsubmit="button_event(); return false;">
+															<input type="hidden" name="hw_no" value="'<? echo $num ?> '">
+													 <button class="btn" onclick="button_event_modify(); return false;">수정</button>
 
+													 <script type="text/javascript">
+															 function button_event_modify(){
+																 if(confirm("수정하시겠습니까?")==true){
+																	 location.href='./hw_sale.php?hw_no=<?php echo $num?>';
+																 }
+																 else{
+																	 return false;
+																 }
+															 }
+													 </script>
+
+													 <button class="btnSubmit btn" onclick="button_event_delete(); return false;">삭제</button>
+													 <script type="text/javascript">
+															 function button_event_delete(){
+																 if (confirm("정말 삭제하시겠습니까??") == true){
+																		 document.form.submit();
+																 } else {
+																		 return false;
+																 }
+															 }
+															 </script>
+
+													 <a href="tab-panel.php"  style="background-color:#E6E6E6" class="btnList btn">목록</a>
+												 </form>
+												 </div>
+							 </div>
+
+
+
+								 <div class="col-md-12 col-sm-1">
+									 <hr></>
+
+							 		 <div class="panel panel-default">
+							 				 <div class="panel-heading">
+							 						 댓글달기
+							 				 </div>
+							 				 <div class="panel-body">
+							 					 <form name="comment_form" id="comment_form" action="comment_update.php" method="post">
+							 						 <input type="hidden" name="hwno" value="<?php echo $hw_no?>"></input>
+							 						 <input type="hidden" name="hwcoId" value="<? echo $_SESSION['user_id'] ?>"></input>
+							 									<label for="coId">작성자 </label> &nbsp <? echo $_SESSION['user_id']; ?>
+							 									<hr>
+							 						<label for="coContent">내용</label>
+							 						<br>
+							 				<textarea cols="140" rows="3" name="coContent" id="coContent"></textarea>
+							 				 </div>
+							 				 <div class="panel-footer">
+							 							<button class="btnSubmit btn" > 댓글 달기 </button>
+
+							 						</form>
+
+							 			 </div>
+							 					 </div>
+
+							 </div>
 
                <!-- 코드 삭제 시작 -->
 
 							 <!-- 코드 삭제 끝 -->
                     <!-- /. ROW  -->
-
-    </div>
+</div>
+ </div>
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->

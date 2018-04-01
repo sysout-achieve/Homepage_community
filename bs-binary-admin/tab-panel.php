@@ -124,7 +124,10 @@ echo $user_id;
 												<input type="hidden" name="sale_num" value="<?php echo $row['hw_no']?>">
 												<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">
 													<div class="panel-heading">
-														<?php echo $row['hw_title']?>
+														<?php
+														echo $row['hw_no']. ". &nbsp ";
+														 echo $row['hw_title'];
+														 ?>
 														</div>
 
 														<div class="panel-body">
@@ -146,11 +149,11 @@ echo $user_id;
 	 							?>
 							</div>
 						</div>
-							<hr>
+							<hr></hr>
 							<p></p>
 
 							<div align="center">
-								<button class="panel-warning" onclick="location.href='hw_sale.php'">판매글 등록</button>
+								<button class="panel-warning btn" onclick="location.href='hw_sale.php'">판매글 등록</button>
 
 						</div>
 					</div>
