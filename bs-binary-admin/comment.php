@@ -9,18 +9,38 @@
 			while($row = $result->fetch_assoc()) {
 		?>
 		<ul class="oneDepth">
-			<li>
+
+				<div class="col-md-12 col-sm-1">
+					<div class="panel panel-danger">
+ 						<div class="panel-heading">
+								 댓글
+							</div>
+							<div class="panel-body">
+
 				<div id="co_<?php echo $row['co_no']?>" class="commentSet">
 					<div class="commentInfo">
-						<div class="commentId">작성자: <span class="coId"><?php echo $row['co_id']?></span></div>
 						<div class="commentBtn">
 							<a href="#" class="comt write">댓글</a>
+							<?
+							if($row['co_id'] == $_SESSION['user_id']){
+							?>
 							<a href="#" class="comt modify">수정</a>
 							<a href="#" class="comt delete">삭제</a>
+							<?
+							 }
+							?>
 						</div>
+					<p>	<div class="commentId">작성자: <span class="coId"><?php echo $row['co_id']?></span></div></p>
+
 					</div>
 					<div class="commentContent"><?php echo $row['co_content']?></div>
 				</div>
+						</div>
+							 <div class="panel-footer">
+								 	<div align="right">	 <?php echo $row['co_date'];?></div>
+									 </div>
+			</div>
+			</div>
 				<?php
 					$sql2 = 'select * from comment_free where co_no!=co_order and co_order=' . $row['co_no'];
 					$result2 = $db->query($sql2);
@@ -28,51 +48,69 @@
 					while($row2 = $result2->fetch_assoc()) {
 				?>
 				<ul class="twoDepth">
-					<li>
+					<div class="col-md-11 col-sm-1">
+						<div class="panel panel-info">
+	 						<div class="panel-heading">
+					                대댓글
+												</div>
+												<div class="panel-body">
 						<div id="co_<?php echo $row2['co_no']?>" class="commentSet">
 							<div class="commentInfo">
-								<div class="commentId">작성자:  <span class="coId"><?php echo $row2['co_id']?></span></div>
 								<div class="commentBtn">
+									<?
+									if($row2['co_id'] == $_SESSION['user_id']){
+									?>
 									<a href="#" class="comt modify">수정</a>
 									<a href="#" class="comt delete">삭제</a>
+									<?
+									 }
+									?>
 								</div>
-							</div>
+								<div class="commentId">작성자:  <span class="coId"><?php echo $row2['co_id']?></span></div>
+
 							<div class="commentContent"><?php echo $row2['co_content'] ?></div>
+							</div>
 						</div>
+					</div>
+					<div class="panel-footer">
+						 <div align="right">	 <?php echo $row2['co_date'];?></div>
+							</div>
 					</li>
 				</ul>
 				<?php
 					}
 				?>
-			</li>
+
 		</ul>
 		<?php } ?>
 	</form>
 </div>
-<form action="comment_update.php" method="post">
-	<input type="hidden" name="bno" value="<?php echo $bNo?>">
-	<table>
-		<tbody>
-			<tr>
-				<th scope="row"><label for="coId">아이디</label></th>
-				<td><input type="text" name="coId" id="coId"></td>
-			</tr>
-			<tr>
-				<th scope="row">
-			<label for="coPassword">비밀번호</label></th>
-				<td><input type="password" name="coPassword" id="coPassword"></td>
-			</tr>
-			<tr>
-				<th scope="row"><label for="coContent">내용</label></th>
-				<td><textarea name="coContent" id="coContent"></textarea></td>
-			</tr>
-		</tbody>
-	</table>
-	<div class="btnSet">
-		<input type="submit" value="코멘트 작성">
-	</div>
-</form>
 
+					<!-- 댓글 달기 시작. -->
+<div class="col-md-12">
+	 <div class="panel panel-default">
+			 <div class="panel-heading">
+					 댓글달기
+			 </div>
+			 <div class="panel-body">
+				 <form name="comment_form" id="comment_form" action="comment_update.php" method="post">
+					 <input type="hidden" name="bno" value="<?php echo $bNo?>"></input>
+					 <input type="hidden" name="coId" value="<? echo $_SESSION['user_id'] ?>"></input>
+								<label for="coId">작성자 </label> &nbsp <? echo $_SESSION['user_id']; ?>
+								<hr>
+					<label for="coContent">내용</label>
+					<br>
+			<textarea cols="140" rows="3" name="coContent" id="coContent"></textarea>
+			 </div>
+			 <div class="panel-footer">
+						<button class="btnSubmit btn" > 댓글 달기 </button>
+
+					</form>
+
+		 </div>
+				 </div>
+</div>
+<!-- 댓글 달기 끝. -->
 <script>
 	$(document).ready(function () {
 		var commentSet = '';
@@ -132,18 +170,14 @@
 				if(action !== 'd') {
 					comment += '			<tr>';
 					comment += '				<th scope="row"><label for="coId">아이디</label></th>';
-					comment += '				<td>' + coId + '</td>';
+					comment += '				<td>' +" <? echo $_SESSION['user_id'] ?>" + '</td>';
 					comment += '			</tr>';
 				}
-				comment += '			<tr>';
-				comment += '				<th scope="row">';
-				comment += '			<label for="coPassword">비밀번호</label></th>';
-				comment += '				<td><input type="password" name="coPassword" id="coPassword"></td>';
-				comment += '			</tr>';
+
 				if(action !== 'd') {
 					comment += '			<tr>';
 					comment += '				<th scope="row"><label for="coContent">내용</label></th>';
-					comment += '				<td><textarea name="coContent" id="coContent">' + coContent + '</textarea></td>';
+					comment += '				<td><textarea class="col-sm-10"  name="coContent" id="coContent">' + coContent + '</textarea></td>';
 					comment += '			</tr>';
 				}
 				comment += '		</tbody>';
@@ -161,6 +195,8 @@
 			if(action == 'w') {
 				$('.writeComment').remove();
 			} else if(action == 'u') {
+				$('.writeComment').remove();
+			} else{
 				$('.writeComment').remove();
 			}
 				$('.commentSet.active').removeClass('active');
