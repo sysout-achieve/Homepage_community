@@ -80,14 +80,14 @@ echo $_SESSION['user_id'];
 							<a  href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
 					</li>
 					<li  >
-							<a  href="form.html"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
+							<a  href="chat/form.php"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
 					</li>
 
 
 
 						</li>
 				<li  >
-							<a  href="blank.html"><i class="fa fa-square-o fa-3x"></i> Donation</a>
+							<a  href="blank.php"><i class="fa fa-square-o fa-3x"></i> 찜 목록</a>
 					</li>
                 </ul>
 

@@ -75,14 +75,14 @@ echo $user_id;
 							<a  href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
 					</li>
 					<li>
-							<a  href="form.html"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
+							<a  href="chat/form.php"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
 					</li>
 
 
 
 						</li>
 				<li  >
-							<a  href="blank.html"><i class="fa fa-square-o fa-3x"></i> Donation</a>
+							<a  href="blank.php"><i class="fa fa-square-o fa-3x"></i> 찜 목록</a>
 					</li>
                 </ul>
 
@@ -97,13 +97,17 @@ echo $user_id;
                      <h2>Hardware 장터 </h2>
                         <h5></h5>
 
+<hr>
+<div align="center">
+	<button class="panel-warning btn" onclick="location.href='hw_sale.php'">판매글 등록</button>
 
-                 <!-- /. ROW  -->
+</div>
+						     <!-- /. ROW  -->
                  <hr />
 
 								 <?php
 	 							date_default_timezone_set('Asia/Seoul');
-
+//hw 제품 hw_no의 순서대로 db에서 값 불러와서 각 div에 값을 넣어줌.
 	 								$sql = 'select * from bod_hw order by hw_no desc';
 	 								$result = $db->query($sql);
 	 								while($row = $result->fetch_assoc())
@@ -122,7 +126,16 @@ echo $user_id;
 									<div class="col-md-4 col-sm-4" >
 										<form name="inner_tab" action="inner_tab.php" method="get">
 												<input type="hidden" name="sale_num" value="<?php echo $row['hw_no']?>">
-												<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">
+													<?php		//판매완료 시 sale 숫자가 1이되고 판매 완료 버튼이 사라짐
+														 if($row['sale'] == 0){
+													?>
+	<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">													 <?
+												 } if($row['sale'] == 1){
+													 ?>
+	<div class="panel panel-danger" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">															<?
+														}
+															?>
+
 													<div class="panel-heading">
 														<?php
 														echo $row['hw_no']. ". &nbsp ";
@@ -131,14 +144,24 @@ echo $user_id;
 														</div>
 
 														<div class="panel-body">
-															<?php echo $row['hw_date']?>
-																<p>
-																	<img src=<?php echo $row['hw_image']?> height="250" width="200">  </p>
+															<?php echo $row['hw_date'];
+																//판매완료 시 sale 숫자가 1이되고 판매 완료 버튼이 사라짐
+																 if($row['sale'] == 0){
+															?>
+															<p>	<img src=<?php echo $row['hw_image']?> height="300" width="400">  </p>
+															<?
+														 } if($row['sale'] == 1){
+															 ?>
+														<p>	<img src="img/soldout.png" height="300" width="400">  </p>														<?
+																}
+																	?>
+
+
 														</div>
 														<div class="panel-footer">
 
 
-															가격: &nbsp		<?php echo $row['hw_price']?>&nbsp&nbsp	&nbsp	&nbsp	&nbsp		&nbsp
+															가격: &nbsp		<?php echo $row['hw_price']?>
 														</div>
 										</div>
 										</form>
@@ -156,6 +179,7 @@ echo $user_id;
 								<button class="panel-warning btn" onclick="location.href='hw_sale.php'">판매글 등록</button>
 
 						</div>
+						<hr>
 					</div>
 
 </div>

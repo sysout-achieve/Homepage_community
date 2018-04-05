@@ -51,7 +51,7 @@ echo "access : ";
 echo $_SESSION['user_id'];
 
 ?>
-&nbsp; <a href="#" class="btn btn-danger square-btn-adjust">Logout</a> </div>
+&nbsp; <a href="logout.php" class="btn btn-danger square-btn-adjust">Logout</a> </div>
         </nav>
            <!-- /. NAV TOP  -->
                 <nav class="navbar-default navbar-side" role="navigation">
@@ -78,14 +78,14 @@ echo $_SESSION['user_id'];
 							<a  href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
 				 </li>
 					<li  >
-							<a  href="form.html"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
+							<a  href="chat/form.php"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
 					</li>
 
 
 
 						</li>
 				<li  >
-							<a  href="blank.html"><i class="fa fa-square-o fa-3x"></i> Donation</a>
+							<a  href="blank.php"><i class="fa fa-square-o fa-3x"></i> 찜 목록</a>
 					</li>
                 </ul>
 
@@ -120,10 +120,10 @@ echo $_SESSION['user_id'];
 			<tbody>
 					<?php
 					date_default_timezone_set('Asia/Seoul');
-
+//게시판 게시글 b_no순서대로 불러서 row에 담음
 						$sql = 'select * from board_free order by b_no desc';
 						$result = $db->query($sql);
-						while($row = $result->fetch_assoc())
+						while($row = $result->fetch_assoc()) 				//테이블에 db 내용 적용
 						{
 							$datetime = explode(' ', $row['b_date']);
 							$date = $datetime[0];
