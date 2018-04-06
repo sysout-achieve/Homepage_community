@@ -147,7 +147,6 @@ echo $_SESSION['user_id'];
 								 		<div class="panel-heading">
 											<?php
 
-											#echo $num;
 
 
 												echo $row['hw_no']. ". &nbsp" ;
@@ -229,6 +228,7 @@ echo $_SESSION['user_id'];
 														<input type="hidden" name="hw_no" value="'<? echo $num ?> '">
 														<?php		// id가 작성자와 같을 때만 수정 삭제 판매완료 버튼이 보임
 															 if($row['hw_id'] == $_SESSION['user_id']){
+																 	if($row['sale'] == 0){
 														?>
 													 <button class="btn" onclick="button_event_modify(); return false;">수정</button>
 
@@ -242,7 +242,9 @@ echo $_SESSION['user_id'];
 																 }
 															 }
 													 </script>
-
+																	<?
+																	}
+																	?>
 													 <button class="btnSubmit btn" onclick="button_event_delete(); return false;">삭제</button>
 													 <script type="text/javascript">
 															 function button_event_delete(){
@@ -273,8 +275,18 @@ echo $_SESSION['user_id'];
 														}
 														?>
 													 <a href="tab-panel.php"  style="background-color:#E6E6E6" class="btnList btn">목록</a>
+													 <?php		//판매완료 시 sale 숫자가 1이되고 판매 완료 버튼이 사라짐
+															if($row['sale'] == 0 && $row['hw_id'] != $_SESSION['user_id']){
+																#echo $num;
+																$result = $db->query("select * from like_user where hw_n=". $num);
+																$row_cnt = $result->num_rows;
+																	if($row_cnt==0){
+
+
+
+													 ?>
 													 <div align="center">
-													 <button class="btnSubmit btn" style="height:50px; width:70px;" onclick="button_event_like(); return false;">찜 ♥  </button>
+													 <button class="btnSubmit btn" style="height:50px; width:90px;" onclick="button_event_like(); return false;">찜하기 ♥  </button>
 													<script type="text/javascript">
 															function button_event_like(){
 																if (confirm("찜목록에 추가 하시겠습니까?") == true){
@@ -287,6 +299,27 @@ echo $_SESSION['user_id'];
 															}
 															</script>
 														</div>
+														<?
+													} else{
+															?>
+															<div align="center">
+														  <button class="btnSubmit btn" style="height:50px; width:70px;" onclick="button_event_like(); return false;">찜 해제  </button>
+														 <script type="text/javascript">
+														 		function button_event_like(){
+														 			if (confirm("찜목록에서 제거 하시겠습니까?") == true){
+
+														 						location.href='./unlike_hw_bod.php?hw_no=<?php echo $num?>';
+
+														 			} else {
+														 					return false;
+														 			}
+														 		}
+														 		</script>
+														 	</div>
+															<?
+														} $result->close();
+													}
+															?>
 													 <hr>
 												 </form>
 												 </div>
