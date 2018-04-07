@@ -7,6 +7,14 @@
 		exit;
 	}
 	$user_id = $_SESSION['user_id'];
+
+	if(isset($_GET['page'])) {
+		$page = $_GET['page'];
+	} else {
+		$page = 1;
+	}
+	$page_refer=ui;
+	require_once("paging.php");
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -60,8 +68,6 @@ echo $_SESSION['user_id'];
 				<li class="text-center">
                     <img src="assets/img/find_user.png" class="user-image img-responsive"/>
 					</li>
-
-
 					<li>
 							<a href="index.html"><i class="fa fa-dashboard fa-3x"></i> 내 정보</a>
 					</li>
@@ -80,15 +86,11 @@ echo $_SESSION['user_id'];
 					<li  >
 							<a  href="chat/form.php"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
 					</li>
-
-
-
 						</li>
 				<li  >
 							<a  href="blank.php"><i class="fa fa-square-o fa-3x"></i> 찜 목록</a>
 					</li>
                 </ul>
-
             </div>
 
         </nav>
@@ -120,9 +122,12 @@ echo $_SESSION['user_id'];
 			<tbody>
 					<?php
 					date_default_timezone_set('Asia/Seoul');
-//게시판 게시글 b_no순서대로 불러서 row에 담음
-						$sql = 'select * from board_free order by b_no desc';
-						$result = $db->query($sql);
+						//게시판 게시글 b_no순서대로 불러서 row에 담음
+					if(isset($emptyData)) {
+
+							echo $emptyData;
+
+						} else {
 						while($row = $result->fetch_assoc()) 				//테이블에 db 내용 적용
 						{
 							$datetime = explode(' ', $row['b_date']);
@@ -145,13 +150,43 @@ echo $_SESSION['user_id'];
 				</form>
 					<?php
 						}
+					}
 					?>
 			</tbody>
 			</table>
-			</article>
+
 			<br></br>
 				<button type="submit" value="글 작성" onclick="location.href='write_free.php'">글 작성</button>
-
+			<div id="boardList">
+					<div class="paging">
+								<?php echo $paging ?>
+							</div>
+							<hr>
+							<div class="searchBox">
+				<form action="ui.php" method="get">
+						<select name="searchColumn">
+							<option <?php echo $searchColumn=='b_title'?'selected="selected"':null?> value="b_title">제목</option>
+							<option <?php echo $searchColumn=='b_content'?'selected="selected"':null?> value="b_content">내용</option>
+							<option <?php echo $searchColumn=='b_id'?'selected="selected"':null?> value="b_id">작성자</option>
+						</select>
+					<input type="text" name="searchText" onkeyup="noSpaceForm(this);" onchange="noSpaceForm(this);" value="<?php echo isset($searchText)?$searchText:null?>">
+						<script>
+							function noSpaceForm(obj) { // 공백 사용 못하게 하는 methoid.
+							    var str_space = /\s/;  // 변수로 공백 체크
+							    if(str_space.exec(obj.value)) {
+							        alert("해당 항목에는 공백을 사용할수 없습니다.\n\n공백은 자동적으로 제거 됩니다.");
+							        obj.focus();
+							        obj.value = obj.value.replace(' ',''); // 공백제거
+							        return false;
+							    }
+							 // onkeyup="noSpaceForm(this);" onchange="noSpaceForm(this);"
+							}
+							</script>
+					<button type="submit">검색</button>
+				</form>
+			</div>
+						</div>
+						</article>
      <!-- /. WRAPPER  -->
     <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
     <!-- JQUERY SCRIPTS -->

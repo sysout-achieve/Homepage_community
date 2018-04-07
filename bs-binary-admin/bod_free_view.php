@@ -1,5 +1,6 @@
 <?php
 	require_once("dbconfig.php");
+	date_default_timezone_set('Asia/Seoul');
 
 	session_start();
 	if(!isset($_SESSION['user_id'])) {
@@ -23,6 +24,10 @@
 				setcookie('board_free_' . $bNo, TRUE, time() + (60 * 60 * 24), '/');
 			}
 		}
+	$user_id = $_SESSION['user_id'];
+
+	$bNo = $_GET['bno'];
+
 $sql = 'select b_title, b_content, b_date, b_hit, b_id from board_free where b_no = ' . $bNo;
 $result = $db->query($sql);
 $row = $result->fetch_assoc();
@@ -91,14 +96,12 @@ $row = $result->fetch_assoc();
                 <a class="navbar-brand" href="index.html">NOVA NETWORK</a>
             </div>
   <div style="color: white;
-padding: 15px 50px 5px 50px;
+padding: 15px 50px 5px 5px;
 float: right;
 font-size: 16px;">
 <?php
 echo "access : ";
-
 echo $_SESSION['user_id'];
-
 ?>
   &nbsp; <a href="logout.php" class="btn btn-danger square-btn-adjust">Logout</a> </div>
         </nav>
@@ -128,14 +131,14 @@ echo $_SESSION['user_id'];
 											 <a  href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
 									 </li>
 									 <li  >
-											 <a  href="form.html"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
+											 <a  href="chat/form.php"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
 									 </li>
 
 
 
 										 </li>
 								 <li  >
-											 <a  href="blank.html"><i class="fa fa-square-o fa-3x"></i> Donation</a>
+											 <a  href="blank.php"><i class="fa fa-square-o fa-3x"></i> 찜 목록</a>
 									 </li>
                 </ul>
 
@@ -217,20 +220,20 @@ echo $_SESSION['user_id'];
 																	<?
 																				}
 																	?>
-															<a href="ui.php" class="btnList btn">목록</a>
+															<a href="ui.php"  style="background-color:#E6E6E6" class="btnList btn">목록</a>
 														</form>
-
+														</div>
 											 <hr>
 
 
-											 																<!--  댓글 내용 확인 시작.-->
+											 																<!--  댓글 시작.-->
 
-																											 										<div id="boardComment">
-																											 											<?php require_once('./comment.php')?>
-																											 										</div>
+																	 										<div id="boardComment">
+																	 											<?php require_once('./comment.php')?>
+																	 										</div>
 
 
-																														 <!-- 댓글 내용 확인 끝. -->
+																														 <!-- 댓글 끝. -->
 
 
 							<!-- 댓글달기 form -->

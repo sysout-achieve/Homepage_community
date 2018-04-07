@@ -134,7 +134,18 @@ echo $_SESSION['user_id'];
 															세부 정보
 													 </div>
 													 <div class="panel-body">
-
+														 <div class="tab-content" id="messages">
+														 		<p><label for="select-cate">Category</label></p>
+														 				 <p><select name="hw_cate" id="select-cate">
+														 					 <option value="데스크탑">데스크탑</option>
+														 					 <option value="노트북">노트북</option>
+														 					 <option value="내부 부품">내부 부품</option>
+														 					 <option value="마우스">마우스</option>
+																			 <option value="키보드">키보드</option>
+																			 <option value="기타">기타</option>
+														 				 </select></p>
+																		 <hr>
+																	 </div>
 
 															 <div class="tab-content">
 																	 <div class="tab-pane fade active in" id="home">

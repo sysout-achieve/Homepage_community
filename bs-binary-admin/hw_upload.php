@@ -1,8 +1,9 @@
 <?php
 require_once("dbconfig.php");
 date_default_timezone_set('Asia/Seoul');
-
-
+if(isset($_POST['hwno'])) {
+	$hw_no = $_POST['hwno'];
+}
 	$hwtitle = $_POST['hw_title'];
 	$hwContent = $_POST['hw_Content'];
 
@@ -12,10 +13,10 @@ date_default_timezone_set('Asia/Seoul');
 
 	$hwinfo = $_POST['hw_info'];
 	$hwprice = $_POST['hw_price'];
+	$hwname= $_POST['hw_name'];
 
 
 	$date = date('Y-m-d H:i:s');
-
 
 $target_dir = "img/upload/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -54,16 +55,26 @@ if ($uploadOk == 0) {
 				echo "이미지 업로드 중 에러가 발생했습니다.";
 		}
 }
-$sql = 'INSERT INTO bod_hw (hw_no, hw_title, hw_image, hw_iteminfo, hw_id, hw_email, hw_method, hw_phone, hw_name, hw_like, hw_date, hw_price) VALUES(null, "' . $hwtitle . '", "' . $hw_image . '", "' . $hwContent . '", "' . $hwwriter . '", "' . $hwem . '", "' . $hwinfo . '", "' . $hwphone . '", 0, 0, "' . $date . '", "' . $hwprice . '")';
-
+//글 수정
+if(isset($hw_no)) {
+	$sql = 'update bod_hw set hw_title="'. $hwtitle .'", hw_image="' . $hw_image . '", hw_iteminfo="' . $hwContent . '", hw_id="' . $hwwriter . '", hw_email="'. $hwem . '", hw_method="'. $hwinfo .'", hw_phone="'. $hwphone .'", hw_price="'. $hwprice . '", hw_name="'. $hwname . '"where hw_no=' . $hw_no;
+	$msgState = '수정';
+}
+else{
+	for($i=1;$i<=100;$i++){
+$sql = 'INSERT INTO bod_hw (hw_no, hw_title, hw_image, hw_iteminfo, hw_id, hw_email, hw_method, hw_phone, hw_name, hw_like, hw_date, hw_price) VALUES(null, "' . $hwtitle . '", "' . $hw_image . '", "' . $hwContent . '", "' . $hwwriter . '", "' . $hwem . '", "' . $hwinfo . '", "' . $hwphone . '", "' . $hwname . '", 0, "' . $date . '", "' . $hwprice . '")';
+$msgState='등록';
 	$result = $db->query($sql);
+	}
+}
+
 
 	if($result) { // query가 정상실행 되었다면,
-		$msg = "정상적으로 글이 등록되었습니다.";
+		$msg = "정상적으로 글이 ". $msgState . "되었습니다.";
 		$bNo = $db->insert_id;
 		$replaceURL = 'tab-panel.php';
 	} else {
-		$msg = "글을 등록하지 못했습니다.";
+		$msg = "글을 " . $msgState . "하지 못했습니다.";
 ?>
 
 		<script>
@@ -76,6 +87,6 @@ $sql = 'INSERT INTO bod_hw (hw_no, hw_title, hw_image, hw_iteminfo, hw_id, hw_em
 ?>
 
 <script>
-	alert("<?php echo $msg?>");
+	alert("<?php echo	$msg?>");
 	location.replace("<?php echo $replaceURL?>");
 </script>
