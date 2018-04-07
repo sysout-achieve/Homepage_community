@@ -14,6 +14,7 @@ if(isset($_POST['hwno'])) {
 	$hwinfo = $_POST['hw_info'];
 	$hwprice = $_POST['hw_price'];
 	$hwname= $_POST['hw_name'];
+	$hwcate= $_POST['hw_cate'];
 
 
 	$date = date('Y-m-d H:i:s');
@@ -57,12 +58,12 @@ if ($uploadOk == 0) {
 }
 //글 수정
 if(isset($hw_no)) {
-	$sql = 'update bod_hw set hw_title="'. $hwtitle .'", hw_image="' . $hw_image . '", hw_iteminfo="' . $hwContent . '", hw_id="' . $hwwriter . '", hw_email="'. $hwem . '", hw_method="'. $hwinfo .'", hw_phone="'. $hwphone .'", hw_price="'. $hwprice . '", hw_name="'. $hwname . '"where hw_no=' . $hw_no;
+	$sql = 'update bod_hw set hw_title="'. $hwtitle .'", hw_image="' . $hw_image . '", hw_iteminfo="' . $hwContent . '", hw_id="' . $hwwriter . '", hw_email="'. $hwem . '", hw_method="'. $hwinfo .'", hw_phone="'. $hwphone .'", hw_price="'. $hwprice . '", hw_name="'. $hwname . '", category="'. $hwcate . '"where hw_no=' . $hw_no;
 	$msgState = '수정';
 }
 else{
 	for($i=1;$i<=100;$i++){
-$sql = 'INSERT INTO bod_hw (hw_no, hw_title, hw_image, hw_iteminfo, hw_id, hw_email, hw_method, hw_phone, hw_name, hw_like, hw_date, hw_price) VALUES(null, "' . $hwtitle . '", "' . $hw_image . '", "' . $hwContent . '", "' . $hwwriter . '", "' . $hwem . '", "' . $hwinfo . '", "' . $hwphone . '", "' . $hwname . '", 0, "' . $date . '", "' . $hwprice . '")';
+$sql = 'INSERT INTO bod_hw (hw_no, hw_title, hw_image, hw_iteminfo, hw_id, hw_email, hw_method, hw_phone, hw_name, hw_like, hw_date, hw_price, category) VALUES(null, "' . $hwtitle . '", "' . $hw_image . '", "' . $hwContent . '", "' . $hwwriter . '", "' . $hwem . '", "' . $hwinfo . '", "' . $hwphone . '", "' . $hwname . '", 0, "' . $date . '", "' . $hwprice . '", "' . $hwcate . '")';
 $msgState='등록';
 	$result = $db->query($sql);
 	}

@@ -11,7 +11,7 @@ $user_id = $_SESSION['user_id'];
 
 	$num=$_GET['sale_num'];
 
-	$sql = 'select hw_no, hw_title, hw_image, hw_iteminfo, hw_id, hw_email, hw_method, hw_phone, hw_name, hw_like, hw_date, hw_price, sale from bod_hw where hw_no = ' .$num;
+	$sql = 'select hw_no, hw_title, hw_image, hw_iteminfo, hw_id, hw_email, hw_method, hw_phone, hw_name, hw_like, hw_date, hw_price, sale, category from bod_hw where hw_no = ' .$num;
 		$result = $db->query($sql);
 		$row = $result->fetch_assoc()
 	?>
@@ -199,6 +199,9 @@ echo $_SESSION['user_id'];
 																	 <div class="tab-pane fade active in" id="home">
 																			 <h4>Item 정보</h4>
 																			 <p><? echo $row['hw_iteminfo']; ?></p>
+																			 <p></p>
+																			 <label for="select-cate">Category</label><br>
+																			  <? echo $row['category']; ?>
 																	 </div>
 																	 <div class="tab-pane fade" id="profile">
 																			 <h4>판매자 정보</h4>

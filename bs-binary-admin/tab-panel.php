@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id'])) {
 	echo "<meta http-equiv='refresh' content='0;url=login.html'>";
 	exit;
 }
@@ -8,9 +8,13 @@ $user_id = $_SESSION['user_id'];
 	require_once("dbconfig.php");
 	date_default_timezone_set('Asia/Seoul');
 
-	$sql = 'select hw_no, hw_title, hw_image, hw_iteminfo, hw_id, hw_email, hw_method, hw_phone, hw_name, hw_like, hw_date, hw_price from bod_hw where hw_no = 2';
-		$result = $db->query($sql);
-		$row = $result->fetch_assoc()
+		if (isset($_GET['page'])) {
+			$page = $_GET['page'];
+		} else {
+			$page = 1;
+		}
+		$page_refer=hw;
+		require_once("paging.php");
 	?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -19,7 +23,8 @@ $user_id = $_SESSION['user_id'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NOVA NETWORK</title>
 	<!-- BOOTSTRAP STYLES-->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+		<link rel="stylesheet" href="./css/board.css" />
+	  <link href="assets/css/bootstrap.css" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
         <!-- CUSTOM STYLES-->
@@ -98,26 +103,30 @@ echo $user_id;
                         <h5></h5>
 
 <hr>
+
 <div align="center">
 	<button class="panel-warning btn" onclick="location.href='hw_sale.php'">판매글 등록</button>
 
 </div>
 						     <!-- /. ROW  -->
                  <hr />
-
+<article class="boardArticle">
 								 <?php
 	 							date_default_timezone_set('Asia/Seoul');
-//hw 제품 hw_no의 순서대로 db에서 값 불러와서 각 div에 값을 넣어줌.
-	 								$sql = 'select * from bod_hw order by hw_no desc';
-	 								$result = $db->query($sql);
-	 								while($row = $result->fetch_assoc())
+							//hw 제품 hw_no의 순서대로 db에서 값 불러와서 각 div에 값을 넣어줌.
+							if (isset($emptyData)) {
+
+									echo $emptyData;
+
+								} else {
+	 								while ($row = $result->fetch_assoc())
 	 								{
 	 									$datetime = explode(' ', $row['hw_date']);
 	 									$date = $datetime[0];
 	 									$time = $datetime[1];
-	 									if($date == Date('Y-m-d')){
+	 									if ($date == Date('Y-m-d')) {
 	 										$row['hw_date'] = $time;
-	 									}else{
+	 									} else {
 	 										$row['hw_date'] = $date;
 										}
 	 							?>
@@ -127,12 +136,12 @@ echo $user_id;
 										<form name="inner_tab" action="inner_tab.php" method="get">
 												<input type="hidden" name="sale_num" value="<?php echo $row['hw_no']?>">
 													<?php		//판매완료 시 sale 숫자가 1이되고 판매 완료 버튼이 사라짐
-														 if($row['sale'] == 0){
+														 if($row['sale'] == 0) {
 													?>
-	<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">													 <?
-												 } if($row['sale'] == 1){
+													<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">													 <?
+												}else if ($row['sale'] == 1) {
 													 ?>
-	<div class="panel panel-danger" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">															<?
+													 <div class="panel panel-danger" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">															<?
 														}
 															?>
 
@@ -146,11 +155,11 @@ echo $user_id;
 														<div class="panel-body">
 															<?php echo $row['hw_date'];
 																//판매완료 시 sale 숫자가 1이되고 판매 완료 버튼이 사라짐
-																 if($row['sale'] == 0){
+																 if ($row['sale'] == 0) {
 															?>
 															<p>	<img src=<?php echo $row['hw_image']?> height="300" width="400">  </p>
 															<?
-														 } if($row['sale'] == 1){
+														} else if ($row['sale'] == 1) {
 															 ?>
 														<p>	<img src="img/soldout.png" height="300" width="400">  </p>														<?
 																}
@@ -169,11 +178,43 @@ echo $user_id;
 
 	 							<?php
 	 								}
+								}
 	 							?>
 							</div>
 						</div>
 							<hr></hr>
-							<p></p>
+							<div id="boardList">
+									<div class="paging">
+												<?php echo $paging ?>
+											</div>
+											<hr>
+											<div class="searchBox">
+								<form action="tab-panel.php" method="get">
+								<label>	<input type="checkbox" name="sale" value="1"> 판매완료 게시물</lebel><br>
+										<select name="searchColumn">
+											<option <?php echo $searchColumn=='hw_title'?'selected="selected"':null?> value="hw_title">제목</option>
+											<option <?php echo $searchColumn=='hw_method'?'selected="selected"':null?> value="hw_method">거래방법</option>
+											<option <?php echo $searchColumn=='hw_id'?'selected="selected"':null?> value="hw_id">작성자</option>
+										</select>
+									<input type="text" name="searchText" onkeyup="noSpaceForm(this);" onchange="noSpaceForm(this);" value="<?php echo isset($searchText)?$searchText:null?>">
+										<script>
+											function noSpaceForm(obj) { // 공백 사용 못하게 하는 methoid.
+													var str_space = /\s/;  // 변수로 공백 체크
+													if(str_space.exec(obj.value)) {
+															alert("해당 항목에는 공백을 사용할수 없습니다.\n\n공백은 자동적으로 제거 됩니다.");
+															obj.focus();
+															obj.value = obj.value.replace(' ',''); // 공백제거
+															return false;
+													}
+											 // onkeyup="noSpaceForm(this);" onchange="noSpaceForm(this);"
+											}
+											</script>
+									<button type="submit">검색</button>
+								</form>
+							</div>
+										</div>
+									</article>
+										<hr>
 
 							<div align="center">
 								<button class="panel-warning btn" onclick="location.href='hw_sale.php'">판매글 등록</button>
