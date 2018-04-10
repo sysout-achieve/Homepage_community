@@ -1,11 +1,20 @@
 <?php
-	$sql = 'select * from comment_free where co_no=co_order and b_no=' . $bNo;
-	$result = $db->query($sql);
+date_default_timezone_set('Asia/Seoul');
+
+
 ?>
 <div id="commentView">
 	<form action="comment_update.php" method="post">
 		<input type="hidden" name="bno" value="<?php echo $bNo?>">
 		<?php
+		if(isset($_GET['page'])) {
+			$page = $_GET['page'];
+		} else {
+			$page = 1;
+		}
+		$page_refer=reply;
+		require_once("paging.php");
+		$result = $db->query($sql);
 			while($row = $result->fetch_assoc()) {
 		?>
 		<ul class="oneDepth">
@@ -54,19 +63,19 @@
 					                대댓글
 												</div>
 												<div class="panel-body">
-						<div id="co_<?php echo $row2['co_no']?>" class="commentSet">
-							<div class="commentInfo">
+						<div  style="padding: 5px 5px 5px 5px" id="co_<?php echo $row2['co_no']?>" class="commentSet">
+							<div style="padding: 5px 5px 5px 5px" class="commentInfo">
 								<div class="commentBtn">
 									<?
 									if($row2['co_id'] == $_SESSION['user_id']){
 									?>
-									<a href="#" class="comt modify">수정</a>
+									<a href="#" class="comt modify" >수정</a>
 									<a href="#" class="comt delete">삭제</a>
 									<?
 									 }
 									?>
 								</div>
-								<div class="commentId">작성자:  <span class="coId"><?php echo $row2['co_id']?></span></div>
+								<div  style="padding: 5px 5px 5px 5px"  class="commentId">작성자:  <span class="coId"><?php echo $row2['co_id']?></span></div>
 
 							<div class="commentContent"><?php echo $row2['co_content'] ?></div>
 							</div>
@@ -85,6 +94,18 @@
 		<?php } ?>
 	</form>
 </div>
+<div style="width:1000px" id="boardList">
+		<div class="paging" >
+			<?php echo $paging ?>
+		</div>
+	</div>
+</div>
+
+
+
+<p>
+
+</p>
 
 					<!-- 댓글 달기 시작. -->
 <div class="col-md-12">
@@ -183,7 +204,7 @@
 				comment += '		</tbody>';
 				comment += '	</table>';
 				comment += '	<div class="btnSet">';
-				comment += '		<input type="submit" value="확인">';
+				comment += '		<input type="submit" style="background-color:#E6E6E6" class="btnList btn" value="확인">';
 				comment += '	</div>';
 				comment += '</div>';
 

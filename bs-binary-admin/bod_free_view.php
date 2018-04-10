@@ -220,30 +220,50 @@ echo $_SESSION['user_id'];
 																	<?
 																				}
 																	?>
-															<a href="ui.php"  style="background-color:#E6E6E6" class="btnList btn">목록</a>
+															<a href="ui.php"  style="background-color:#E6E6E6" id="list_bod" class="btnList btn">목록</a>
 														</form>
 														</div>
 											 <hr>
 
+<?
+
+$result2 = $db->query("select * from comment_free where b_no=". $bNo);
+$row_cnt = $result2->num_rows;
+
+?>
+											 <a href="#btn_com" class="btn_comment_VW" id="btn_com">댓글 열기 <? echo $row_cnt ?></a>
+											 <script>
+												 var open = '<?= $open ?>';
+											 $('.btn_comment_VW').click(function(){
+
+												 if(open == 0){
+													 $("#comment_VW").show();
+													 $('#btn_com:contains("댓글 열기 <? echo $row_cnt ?>")').text("댓글 접기 <? echo $row_cnt ?>");
+													 open=1;
+												 } else {
+													 $("#comment_VW").hide();
+												 	 $('#btn_com:contains("댓글 접기 <? echo $row_cnt ?>")').text("댓글 열기 <? echo $row_cnt ?>");
+													 open=0;
+												 }
+											 });
+										 	</script>
 
 											 																<!--  댓글 시작.-->
 
-																	 										<div id="boardComment">
+																	 										<div id="comment_VW" style="Display: none;">
 																	 											<?php require_once('./comment.php')?>
-																	 										</div>
 
+																											</div>
 
 																														 <!-- 댓글 끝. -->
 
 
 							<!-- 댓글달기 form -->
-							<hr>
+
 
 
 
 							<!--  댓글 달기 form 끝. -->
-
-											<hr>
 											<p></p>
 
 
