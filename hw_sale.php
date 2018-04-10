@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
       <meta charset="utf-8" />
@@ -43,10 +43,10 @@ font-size: 16px;"> &nbsp; <a href="login.html" class="btn btn-danger square-btn-
 							<a href="index.html"><i class="fa fa-dashboard fa-3x"></i> 내 정보</a>
 					</li>
 					 <li>
-							<a href="ui.html"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
+							<a href="ui.php"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
 					</li>
 					<li>
-							<a class="active-menu" href="tab-panel.html"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
+							<a class="active-menu" href="tab-panel.php"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
 					</li>
 					<li>
 								<a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> 알고리즘 퀴즈</a>
@@ -81,30 +81,64 @@ font-size: 16px;"> &nbsp; <a href="login.html" class="btn btn-danger square-btn-
                 </div>
                  <!-- /. ROW  -->
                  <hr />
+								 <form action="hw_upload.php" method="post" enctype="multipart/form-data">
 								 <div class="panel panel-primary">
 								 		<div class="panel-heading">
-											<?php
 
-											$num=$_GET['sale_num'];
-											$Name=$_GET['sale_name'];
-											$price=$_GET['sale_price'];
-											#echo $num;
-											echo $Name;
-											?>
+											<input size="50%" style="background-color: #white; color:black;" type="text" name="hw_title" placeholder="제품명"/>
 								 		</div>
 								 		<div class="panel-body">
+												<!--  이미지 저장 해야함-->
+											<p>
 
-								 				<p><img src=<? echo $_GET['sale_img'] ?>></p>
+													저장할 이미지를 선택해주세요: <input type="file" name="fileToUpload" id="fileToUpload" value="이미지 선택">
+
+
+												</p>
 								 		</div>
+
+										<div class="row">
+									 <div class="col-md-12 col-sm-12">
+											 <div class="panel panel-default">
+													 <div class="panel-heading">
+															세부 정보
+													 </div>
+													 <div class="panel-body">
+
+
+															 <div class="tab-content">
+																	 <div class="tab-pane fade active in" id="home">
+																			 <h4>Item 정보</h4>
+																			 <p><textarea cols="100" rows="5" name="hw_Content" id="hw_Content" placeholder="제품 구입 시기, 제품 특징이나 스펙, 팔게 된 이유 등을 작성해주세요."></textarea></p>
+																	 </div>
+																	 <div class="tab-content" id="profile">
+																			 <h4>판매자 정보</h4>
+																			 <p>	<input size="70%" style="background-color: #white; color:black;" type="text" name="hw_writer" placeholder="작성자"/>
+																			 </p>
+																			 <p><input size="70%" style="background-color: #white; color:black;" type="text" name="hw_em" placeholder="email"/></p>
+																						<p><input size="70%" style="background-color: #white; color:black;" type="text" name="hw_phone" placeholder="phone_number"/>
+																				</p>
+																	 </div>
+																	 <div class="tab-content" id="messages">
+																			 <h4>거래 방법</h4>
+																			 <p><textarea cols="100" rows="5" name="hw_info" id="hw_info" placeholder="직거래 or 택배거래, 지역, 시간 등을 작성해주세요."></textarea></p>
+																	 </div>
+
+															 </div>
+													 </div>
+											 </div>
+									 </div>
+								 </div>
+
 								 		<div class="panel-footer">
-								 		<?
-											$price=$_GET['sale_price'];
-											echo $price;
-									  ?>
+								 		<input size="50%" style="background-color: #white; color:black;" type="text" name="hw_price" placeholder="가격"/>
 								 		</div>
 								 </div>
 
-
+								 <div align="center">
+								 <button type="submit">판매글 올리기</button><button>돌아가기</button>
+							 </div>
+</form>
                <!-- 코드 삭제 시작 -->
 
 							 <!-- 코드 삭제 끝 -->
@@ -125,7 +159,6 @@ font-size: 16px;"> &nbsp; <a href="login.html" class="btn btn-danger square-btn-
     <script src="assets/js/jquery.metisMenu.js"></script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
-
 
 </body>
 </html>

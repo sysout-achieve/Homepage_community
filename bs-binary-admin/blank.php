@@ -1,4 +1,6 @@
 <?php
+require_once("dbconfig.php");
+
 session_start();
 if(!isset($_SESSION['user_id'])) {
 	echo "<meta http-equiv='refresh' content='0;url=login.html'>";
@@ -32,7 +34,7 @@ $user_id = $_SESSION['user_id'];
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Binary admin</a>
+                <a class="navbar-brand" href="index.html">NOVA NETWORK</a>
             </div>
   <div style="color: white;
 padding: 15px 50px 5px 50px;
@@ -44,7 +46,7 @@ echo "access : ";
 echo $_SESSION['user_id'];
 
 ?>
- &nbsp; <a href="#" class="btn btn-danger square-btn-adjust">Logout</a> </div>
+ &nbsp; <a href="logout.php" class="btn btn-danger square-btn-adjust">Logout</a> </div>
         </nav>
            <!-- /. NAV TOP  -->
                 <nav class="navbar-default navbar-side" role="navigation">
@@ -71,14 +73,14 @@ echo $_SESSION['user_id'];
 							<a  href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
 				 </li>
 					<li  >
-							<a  href="form.html"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
+							<a  href="chat/form.php"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
 					</li>
 
 
 
 						</li>
 				<li  >
-							<a class="active-menu" href="blank.html"><i class="fa fa-square-o fa-3x"></i> Donation</a>
+							<a class="active-menu" href="blank.php"><i class="fa fa-square-o fa-3x"></i> 찜 목록</a>
 					</li>
                 </ul>
 
@@ -90,14 +92,81 @@ echo $_SESSION['user_id'];
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
-                     <h2>Blank Page</h2>
-                        <h5>Welcome Jhon Deo , Love to see you back. </h5>
-
+                     <h2>찜 목록</h2>
+                        <h5>당신이 찜한 목록입니다. </h5>
+													<hr></hr>
                     </div>
-                </div>
+
+
                  <!-- /. ROW  -->
                  <hr />
+								 <?php
+								date_default_timezone_set('Asia/Seoul');
+							//hw 제품 hw_no의 순서대로 db에서 값 불러와서 각 div에 값을 넣어줌.
+							$sql = 'select * from bod_hw order by hw_no desc';
+							$sql = 'select * from like_user where id="' . $user_id .'" order by hw_n desc' ;
+									$result = $db->query($sql);
+									while($row = $result->fetch_assoc())
+									{
+										$sql2 = 'select * from bod_hw where hw_no=' .$row['hw_n'];
+										$result2 = $db->query($sql2);
+										while($row2 = $result2->fetch_assoc()){
 
+								?>
+
+
+									<div class="col-md-4 col-sm-4" >
+										<form name="inner_tab" action="inner_tab.php" method="get">
+												<input type="hidden" name="sale_num" value="<?php echo $row2['hw_no']?>">
+													<?php		//판매완료 시 sale 숫자가 1이되고 판매 완료 버튼이 사라짐
+														 if($row2['sale'] == 0){
+													?>
+							<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row2['hw_no']?>'" style="cursor: pointer;">													 <?
+						} if($row2['sale'] == 1){
+													 ?>
+							<div class="panel panel-danger" onclick="location.href='inner_tab.php?sale_num=<?php echo $row2['hw_no']?>'" style="cursor: pointer;">															<?
+														}
+															?>
+
+													<div class="panel-heading">
+														<?php
+														echo $row2['hw_no']. ". &nbsp ";
+														 echo $row2['hw_title'];
+														 ?>
+														</div>
+
+														<div class="panel-body">
+															<?php echo $row2['hw_date'];
+																//판매완료 시 sale 숫자가 1이되고 판매 완료 버튼이 사라짐
+																 if($row2['sale'] == 0){
+															?>
+															<p>	<img src=<?php echo $row2['hw_image']?> height="300" width="400">  </p>
+															<?
+														}else if($row2['sale'] == 1){
+															 ?>
+														<p>	<img src="img/soldout.png" height="300" width="400">  </p>
+																<?
+																}
+																	?>
+
+
+														</div>
+														<div class="panel-footer">
+
+
+															가격: &nbsp		<?php echo $row2['hw_price']?>
+														</div>
+										</div>
+										</form>
+									</div>
+
+								<?php
+									}
+								}
+								?>
+							</div>
+
+ </div>
     </div>
              <!-- /. PAGE INNER  -->
             </div>

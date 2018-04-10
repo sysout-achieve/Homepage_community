@@ -10,31 +10,110 @@
 
 
       <link rel="stylesheet" href="css/style.css">
-
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
 </head>
 
 <body>
+	<!-- <script type="text/javascript">
+	$(document).ready(function() { alert('one'); });
+	$(function() { alert('two'); });
+</script> -->
+
 
   <div class="login-page">
   <div class="form">
-    <form class="register-form">
-      <input type="text" placeholder="ID"/>
-	    <input type="text" placeholder="name"/>
-      <input type="password" placeholder="password"/>
-      <input type="text" placeholder="email address"/>
-	    <input type="text" placeholder="completion code"/>
-      <button>create</button>
+    <form class="register-form" action="signUp.php" name="register_form" method="post">
+			<input type="text" id="name" name="name" placeholder="name"/>
+      <input type="text" id="ID" name="id" placeholder="ID"/>
+			<button type="button" onclick='id_check()' name="btn_idcheck">ID 중복체크</button>
+			<script>
+			function id_check(){
+				var InputId = document.getElementById("ID").value;
+				if(InputId ==""){
+						alert("아이디를 입력해주세요.")
+				} else {
+					$.ajax({
+						url				: 'idcheck.php',
+						data 			:	 {a : InputId},
+						type			: 'post',
+						datatype	:	'json',
+						success		: function(result) {
+							if(result.success == true) {
+								alert(result.data);
+								register_form.id.readOnly = true;
+								return;
+							}
+							alert(result.msg);
+							return;
+						}
+					});
+				}
+			}
+			</script>
+			<br></br>
+      <input type="password" id="password" name="password" placeholder="password"/>
+			<input type="password" id="chk_password" name="chk_password" placeholder="check your password"/>
+			<button type="button" onclick="passwordcheck()" name="btn_idcheck">비밀번호 확인</button>
+			<br></br>
+			<script>
+			function passwordcheck() {
+				if(document.getElementById("password").value == ""){
+					alert("비밀번호를 다시 한 번 확인해주세요.")
+				}
+				else if(document.getElementById("password").value == document.getElementById("chk_password").value){
+					alert("비밀번호가 일치합니다.")
+					register_form.password.readOnly = true;
+					register_form.chk_password.readOnly = true;
+				} else {
+					alert("비밀번호를 다시 한 번 확인해주세요.")
+				}
+			}
+			</script>
+			<input type="text" id="email" name="email" placeholder="email address"/>
+	    <input type="text" id="chk_code" name="chk_code" placeholder="completion code"/>
+      <button type="submit">create</button>
+
       <p class="message">Already registered? <a href="#">Sign In</a></p>
     </form>
-    <form class="login-form" action="index.html" method="post">
-      <input type="text" placeholder="ID" name="login_ID"/>
-      <input type="password" placeholder="password" name="login_password"/>
-     <button type="submit" onclick="location.href='index.html'" >login</button>
+    <form name="form" class="login-form" method="post" action="index.html">
+      <input type="text" placeholder="ID" id="login_ID" name="login_ID"/>
+      <input type="password" placeholder="password" id="login_password" name="login_password"/>
+     <button onclick="login(); return false;">login</button>
+		 <script type="text/javascript">
+		 	function login(){
+				var loginid =document.getElementById("login_ID").value;
+				var loginpassword = document.getElementById("login_password").value;
+				if(document.getElementById("login_ID").value==""){
+					alert("아이디를 입력해주세요.")
+				} else if(document.getElementById("login_password").value==""){
+					alert("비밀번호를 입력해주세요")
+				} else{
+					$.ajax({
+						url				: 'loginchk.php',
+						data 			:	 {id : loginid, password : loginpassword},
+						type			: 'post',
+						datatype	:	'json',
+						success		: function(result){
+								if(result.success == true){
+									if(result.data==true){
+										document.form.submit();
+
+									}
+								}else{
+									alert(result.msg);
+									return false;
+								}
+						}
+					});
+				}
+			}
+		 </script>
       <p class="message">Not registered? <a href="#">Create an account</a></p>
     </form>
   </div>
 </div>
+
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
 

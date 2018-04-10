@@ -1,3 +1,14 @@
+<?php
+
+	require_once("dbconfig.php");
+	date_default_timezone_set('Asia/Seoul');
+
+	$num=$_GET['sale_num'];
+
+	$sql = 'select hw_no, hw_title, hw_image, hw_iteminfo, hw_id, hw_email, hw_method, hw_phone, hw_name, hw_like, hw_date, hw_price from bod_hw where hw_no = ' .$num;
+		$result = $db->query($sql);
+		$row = $result->fetch_assoc()
+	?>
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -43,10 +54,10 @@ font-size: 16px;"> &nbsp; <a href="login.html" class="btn btn-danger square-btn-
 							<a href="index.html"><i class="fa fa-dashboard fa-3x"></i> 내 정보</a>
 					</li>
 					 <li>
-							<a href="ui.html"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
+							<a href="ui.php"><i class="fa fa-desktop fa-3x"></i> 자유게시판</a>
 					</li>
 					<li>
-							<a class="active-menu" href="tab-panel.html"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
+							<a class="active-menu" href="tab-panel.php"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
 					</li>
 					<li>
 								<a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> 알고리즘 퀴즈</a>
@@ -85,22 +96,63 @@ font-size: 16px;"> &nbsp; <a href="login.html" class="btn btn-danger square-btn-
 								 		<div class="panel-heading">
 											<?php
 
-											$num=$_GET['sale_num'];
-											$Name=$_GET['sale_name'];
-											$price=$_GET['sale_price'];
 											#echo $num;
-											echo $Name;
+
+
+
+												echo $row['hw_title'];
 											?>
+
 								 		</div>
 								 		<div class="panel-body">
 
-								 				<p><img src=<? echo $_GET['sale_img'] ?>></p>
+								 				<p><img src=<? echo $row['hw_image']; ?>></p>
 								 		</div>
+
+										<div class="row">
+									 <div class="col-md-12 col-sm-12">
+											 <div class="panel panel-default">
+													 <div class="panel-heading">
+															세부 정보
+													 </div>
+													 <div class="panel-body">
+															 <ul class="nav nav-tabs">
+																	 <li class="active"><a href="#home" data-toggle="tab">Item 정보</a>
+																	 </li>
+																	 <li class=""><a href="#profile" data-toggle="tab">판매자 정보</a>
+																	 </li>
+																	 <li class=""><a href="#messages" data-toggle="tab">거래 방법</a>
+																	 </li>
+
+															 </ul>
+
+															 <div class="tab-content">
+																	 <div class="tab-pane fade active in" id="home">
+																			 <h4>Item 정보</h4>
+																			 <p><? echo $row['hw_iteminfo']; ?></p>
+																	 </div>
+																	 <div class="tab-pane fade" id="profile">
+																			 <h4>판매자 정보</h4>
+																			 <p> 판매자 아이디 : <? echo $row['hw_id']; ?>
+																		<br>
+																						E-mail : <? echo $row['hw_email'];?>
+																					<br>
+																					Phone :	<? echo $row['hw_phone'];?></p>
+																	 </div>
+																	 <div class="tab-pane fade" id="messages">
+																			 <h4>거래 방법</h4>
+																			 <p><? echo $row['hw_method']; ?></p>
+																	 </div>
+
+															 </div>
+													 </div>
+											 </div>
+									 </div>
+								 </div>
+
 								 		<div class="panel-footer">
-								 		<?
-											$price=$_GET['sale_price'];
-											echo $price;
-									  ?>
+								 		<? echo $row['hw_price']; ?>
+
 								 		</div>
 								 </div>
 
@@ -125,7 +177,6 @@ font-size: 16px;"> &nbsp; <a href="login.html" class="btn btn-danger square-btn-
     <script src="assets/js/jquery.metisMenu.js"></script>
       <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
-
 
 </body>
 </html>
