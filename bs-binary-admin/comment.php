@@ -115,6 +115,7 @@ date_default_timezone_set('Asia/Seoul');
 			 </div>
 			 <div class="panel-body">
 				 <form name="comment_form" id="comment_form" action="comment_update.php" method="post">
+					 <input type="hidden" name="lastpage" value="1"></input>
 					 <input type="hidden" name="bno" value="<?php echo $bNo?>"></input>
 					 <input type="hidden" name="coId" value="<? echo $_SESSION['user_id'] ?>"></input>
 								<label for="coId">작성자 </label> &nbsp <? echo $_SESSION['user_id']; ?>

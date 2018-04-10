@@ -226,14 +226,12 @@ echo $_SESSION['user_id'];
 											 <hr>
 
 <?
-
 $result2 = $db->query("select * from comment_free where b_no=". $bNo);
 $row_cnt = $result2->num_rows;
-
 ?>
 											 <a href="#btn_com" class="btn_comment_VW" id="btn_com">댓글 열기 <? echo $row_cnt ?></a>
 											 <script>
-												 var open = '<?= $open ?>';
+												 var open = '<?= $_GET['open'] ?>';
 											 $('.btn_comment_VW').click(function(){
 
 												 if(open == 0){
@@ -254,7 +252,16 @@ $row_cnt = $result2->num_rows;
 																	 											<?php require_once('./comment.php')?>
 
 																											</div>
-
+																											<?
+																											if(isset($_GET['open'])) {
+																											?>
+																											<script>
+																												$('#btn_com:contains("댓글 열기 <? echo $row_cnt ?>")').text("댓글 접기 <? echo $row_cnt ?>");
+																												$("#comment_VW").show();
+																										</script>
+																										<?
+																											}
+																											?>
 																														 <!-- 댓글 끝. -->
 
 
@@ -274,7 +281,6 @@ $row_cnt = $result2->num_rows;
 										 </div>
 
 										 </article>
-
 
 
 </body>
