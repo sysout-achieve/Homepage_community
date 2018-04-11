@@ -12,11 +12,23 @@ $user_id = $_SESSION['user_id'];
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
       <meta charset="utf-8" />
-
+			<script src="../js/jquery-2.1.3.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<script type="text/javascript" src="chat.js"></script>
-		<script src="../js/jquery-2.1.3.min.js"></script>
+		<script>
+		//append_list function 생성 ( 스크롤 페이징 )
+		var start = 0;
+		var list = 15;
+		function append_list(){
+			var $o = document.getElementById('list');
 
+			$.post("./list_append.php", {start:start, list:list}, function(data){
+				$("#list").prepend(data);
+				$("#list").scrollTop = $("#list").scrollheight;
+				start = list+start;
+			});
+		}
+		</script>
 		<link rel="stylesheet" type="text/css" href="chat.css" />
     <title>NOVA NETWORK</title>
 	<!-- BOOTSTRAP STYLES-->
@@ -105,15 +117,15 @@ echo $_SESSION['user_id'];
 <!-- 채팅박스 시작. -->
 <div style="width:650px;">
 		<div  class="chat-panel panel panel-default chat-boder chat-panel-head" >
-	<div class="panel-heading">
-			<i class="fa fa-comments fa-fw"></i>채팅방
-</div>
-<div>
-		<ul  class="chat-box">
+			<div class="panel-heading">
+				<i class="fa fa-comments fa-fw"></i>채팅방
+			</div>
+				<div>
+			<ul id="appendbox" class="chat-box">
 				<div id="list" class="chat-body">
 
-</div>
-</ul>
+				</div>
+			</ul>
 
 </div>
 <div class="panel-footer">
@@ -130,7 +142,24 @@ echo $_SESSION['user_id'];
 				</span>
 		</div>
 </div>
+<script>
+	$(function(e){
+		append_list();
+		$(window).scroll(function() {
+    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+			append_list();
 
+		}
+	})
+		$("#appendbox").scroll(function(){
+			var dh = $("#appendbox").scrollheight();
+			var wt = $("#appendbox").scrollTop();
+			if(dh <= wt ){
+				append_list();
+			}
+		});
+	});
+</script>
 </div>
 </div>
 
@@ -151,7 +180,7 @@ echo $_SESSION['user_id'];
 	    httpRequest.send();
 		}
 	sendRequest();
-	window.setInterval("sendRequest()", 1000); // 0.5초마다 Ajax 요청을 보냄.
+	window.setInterval("sendRequest()", 1000); // 1초마다 Ajax 요청을 보냄.
 	</script>
 
 	<div id="text" class="panel-heading">
@@ -159,7 +188,7 @@ echo $_SESSION['user_id'];
 	</div>
 
 <div id="list_room" class="panel-body">
-	<!-- 접속자 아이디 나오게 해야 함 -->
+	<!-- 접속자 아이디 나오 함 -->
 	<script>
 		function sendRequest_visit() {
 		var httpRequest = new XMLHttpRequest();
@@ -180,6 +209,12 @@ echo $_SESSION['user_id'];
 </div>
                     </div>
                 </div>
+								<button onclick="chat_past();">이전 대화</button>
+<script>
+	function chat_past(){
+		append_list();
+	}
+</script>
                  <!-- /. ROW  -->
                  <hr />
 
