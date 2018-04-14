@@ -32,6 +32,7 @@ if ( $result->success ) {
 		//TODO : 결제성공 처리
 		$sql = 'update bod_hw set sale=1 where hw_no = ' . $hw_no;
 		$result = $db -> query($sql);
+		alert("결제가 완료되었습니다.");
 	}
 } else {
 	error_log($result->error['code']);

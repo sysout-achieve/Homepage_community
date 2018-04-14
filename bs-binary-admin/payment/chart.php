@@ -7,14 +7,16 @@ if(!isset($_SESSION['user_id'])) {
 	exit;
 }
  $user_id = $_SESSION['user_id'];
+	$sql = 'select * from user_info where id="' . $user_id .'" order by grade desc' ;
+	$result = $db->query($sql);
+	$row = $result->fetch_assoc();
+	$user_email = $row['email'];
+	$user_name = $row['name'];
 
 $hno = $_GET['hw_no'];
 $sql = 'select hw_no, hw_title, hw_image, hw_iteminfo, hw_id, hw_email, hw_method, hw_phone, hw_name, hw_like, hw_date, hw_price, sale, category from bod_hw where hw_no = ' .$hno;
 	$result = $db->query($sql);
 	$row = $result->fetch_assoc()
-
-
-
 ?>
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -54,32 +56,32 @@ font-size: 16px;">
 echo "access : ";
 
 echo $_SESSION['user_id'];
-
 ?>
 &nbsp; <a href="../logout.php" class="btn btn-danger square-btn-adjust">Logout</a> </div>
 <script>
 	IMP.init('imp31514230');
 	IMP.request_pay({
-	    pg : 'inicis', // version 1.1.0부터 지원.
+	    pg : 'inicis', //
 	    pay_method : 'card',
 	    merchant_uid : 'merchant_' + new Date().getTime(),
 	    name : '<?echo $row['hw_title']?>',
 	    amount : '<?echo $row['hw_price']?>',
-			buyer_email : 'iamport@siot.do',
 	 		buyer_name : '<?echo $user_id?>',
-	    m_redirect_url : 'http://192.168.111.145/project/new/inner_tab.php?sale_num=<? echo $hno ?>'
+			buyer_email : '<?echo $user_email?>',
+			buyer_postcode : '<?echo $user_name?>',
+	    m_redirect_url : 'http://192.168.111.145/project/new/table.php'
 	}, function(rsp) {
 	    if ( rsp.success ) {
 	        var msg = '결제가 완료되었습니다.';
-	        msg += '고유ID : ' + rsp.imp_uid;
+	        msg += '구매상품 : ' + '<?echo $row['hw_title']?>';
 	        msg += '\n상점 거래ID : ' + rsp.merchant_uid;
 	        msg += '\n결제 금액 : ' + rsp.paid_amount;
-	        msg += '\n카드 승인번호 : ' + rsp.apply_num;
 	    } else {
 	        var msg = '결제에 실패하였습니다.';
 	        msg += '에러내용 : ' + rsp.error_msg;
 	    }
 	    alert(msg);
+			location.href='check_sale.php?hw_no=<?php echo $hno?>&hw_name=<?php echo $row['hw_title']?>&hw_img=<?php echo $row['hw_image']?>&hw_price=<?php echo $row['hw_price']?>';
 	});
 </script>
         </nav>
@@ -144,10 +146,12 @@ echo $_SESSION['user_id'];
 								 													<?php		//판매완료 시 sale 숫자가 1이되고 판매 완료 버튼이 사라짐
 								 														 if($row['sale'] == 0) {
 								 													?>
-								 													<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">													 <?
-								 												}else if ($row['sale'] == 1) {
+								 													<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">
+																						 <?
+								 												} else if ($row['sale'] == 1) {
 								 													 ?>
-								 													 <div class="panel panel-danger" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">															<?
+								 													 <div class="panel panel-danger" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">
+																						 	<?
 								 														}
 								 															?>
 
@@ -167,9 +171,10 @@ echo $_SESSION['user_id'];
 								 															<?
 								 														} else if ($row['sale'] == 1) {
 								 															 ?>
-								 														<p>	<img src="../img/soldout.png" height="50" width="80">  </p>														<?
+								 														<p>	<img src="../img/soldout.png" height="50" width="80">  </p>
+																						<?
 								 																}
-								 																	?>
+								 														?>
 
 
 								 														</div>
@@ -181,13 +186,22 @@ echo $_SESSION['user_id'];
 								 										</div>
 								 										</form>
 								 									</div>
-																	<div class="col-md-4 col-sm-12" >
+																	<div class="col-md-4 col-sm-12">
 																		<div class="panel panel-default">
 																			<div class="panel-heading">
 																				결제 상태
 																			</div>
 																			<div class="panel-body">
-																				
+																				<hr />
+																				<br />
+																				<br />
+																				<span style="float: center;"> 결제 대기 중 </span>
+																				<br />
+																				<br />
+																				<hr />
+																			</div>
+																			<div class="panel-footer">
+<br />
 																			</div>
 																		</div>
 
