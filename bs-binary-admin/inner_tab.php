@@ -96,12 +96,7 @@ echo $_SESSION['user_id'];
 					<li>
 							<a class="active-menu" href="tab-panel.php"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
 					</li>
-					<li>
-								<a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> 알고리즘 퀴즈</a>
-					</li>
-						<li>
-							<a  href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
-					</li>
+
 					<li  >
 							<a  href="chat/form.php"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
 					</li>
@@ -112,6 +107,9 @@ echo $_SESSION['user_id'];
 				<li  >
 							<a  href="blank.php"><i class="fa fa-square-o fa-3x"></i> 찜 목록</a>
 					</li>
+					<li>
+						<a href="table.php"><i class="fa fa-table fa-3x"></i>구매이력</a>
+				</li>
                 </ul>
 
             </div>
@@ -276,20 +274,35 @@ echo $_SESSION['user_id'];
 														<?
 															}
 														}
+
 														?>
 													 <a href="tab-panel.php"  style="background-color:#E6E6E6" class="btnList btn">목록</a>
+													 <?
+												 	if($row['hw_name']=="팀노바 안전거래" && $row['sale'] == 0 && $row['hw_id'] != $_SESSION['user_id'] ){
+														 ?>
+
+														 <span style="float:right"><button style="align:right" class="btnSubmit btn"  onclick="button_event_pay(); return false;"> 바로 결제 </button></span>
+														 <script type="text/javascript">
+																 function button_event_pay(){
+																	 if (confirm("바로 결제 하시겠습니까?") == true){
+																				 location.href='./payment/chart.php?hw_no=<?php echo $num?>';
+																	 } else {
+																			 return false;
+																	 }
+																 }
+																 </script>
 													 <?php		//판매완료 시 sale 숫자가 1이되고 판매 완료 버튼이 사라짐
-															if($row['sale'] == 0 && $row['hw_id'] != $_SESSION['user_id']){
+												 }
 																#echo $num;
-																$result = $db->query("select * from like_user where hw_n=". $num);
+																$result = $db->query('select * from like_user where hw_n='. $num);
 																$row_cnt = $result->num_rows;
 																	if($row_cnt==0){
 
 
 
 													 ?>
-													 <div align="center">
-													 <button class="btnSubmit btn" style="height:50px; width:90px;" onclick="button_event_like(); return false;">찜하기 ♥  </button>
+
+											<center> <button class="btnSubmit btn" onclick="button_event_like(); return false;">찜하기 ♥  </button></center>
 													<script type="text/javascript">
 															function button_event_like(){
 																if (confirm("찜목록에 추가 하시겠습니까?") == true){
@@ -301,7 +314,7 @@ echo $_SESSION['user_id'];
 																}
 															}
 															</script>
-														</div>
+
 														<?
 													} else{
 															?>
@@ -319,9 +332,9 @@ echo $_SESSION['user_id'];
 														 		}
 														 		</script>
 														 	</div>
-															<?
-														} $result->close();
-													}
+
+																<?
+															} $result->close();
 															?>
 													 <hr>
 												 </form>
