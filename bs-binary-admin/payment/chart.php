@@ -76,12 +76,15 @@ echo $_SESSION['user_id'];
 	        msg += '구매상품 : ' + '<?echo $row['hw_title']?>';
 	        msg += '\n상점 거래ID : ' + rsp.merchant_uid;
 	        msg += '\n결제 금액 : ' + rsp.paid_amount;
+					alert(msg);
+				 location.href='check_sale.php?hw_no=<?php echo $hno?>&hw_name=<?php echo $row['hw_title']?>&hw_img=<?php echo $row['hw_image']?>&hw_price=<?php echo $row['hw_price']?>';
 	    } else {
 	        var msg = '결제에 실패하였습니다.';
 	        msg += '에러내용 : ' + rsp.error_msg;
+					alert(msg);
+
 	    }
-	    alert(msg);
-			location.href='check_sale.php?hw_no=<?php echo $hno?>&hw_name=<?php echo $row['hw_title']?>&hw_img=<?php echo $row['hw_image']?>&hw_price=<?php echo $row['hw_price']?>';
+
 	});
 </script>
         </nav>
@@ -146,11 +149,11 @@ echo $_SESSION['user_id'];
 								 													<?php		//판매완료 시 sale 숫자가 1이되고 판매 완료 버튼이 사라짐
 								 														 if($row['sale'] == 0) {
 								 													?>
-								 													<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">
+								 													<div class="panel panel-primary" onclick="location.href='../inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">
 																						 <?
 								 												} else if ($row['sale'] == 1) {
 								 													 ?>
-								 													 <div class="panel panel-danger" onclick="location.href='inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">
+								 													 <div class="panel panel-danger" onclick="location.href='../inner_tab.php?sale_num=<?php echo $row['hw_no']?>'" style="cursor: pointer;">
 																						 	<?
 								 														}
 								 															?>
