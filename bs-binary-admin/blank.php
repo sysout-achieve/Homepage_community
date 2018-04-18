@@ -66,12 +66,7 @@ echo $_SESSION['user_id'];
 					<li>
 							<a  href="tab-panel.php"><i class="fa fa-qrcode fa-3x"></i> hardware 장터</a>
 					</li>
-				 <li>
-							 <a href="chart.html"><i class="fa fa-bar-chart-o fa-3x"></i> 알고리즘 퀴즈</a>
-				 </li>
-						<li>
-							<a  href="table.html"><i class="fa fa-table fa-3x"></i>개발정보</a>
-				 </li>
+
 					<li  >
 							<a  href="chat/form.php"><i class="fa fa-edit fa-3x"></i> 업계 현황 </a>
 					</li>
@@ -82,6 +77,9 @@ echo $_SESSION['user_id'];
 				<li  >
 							<a class="active-menu" href="blank.php"><i class="fa fa-square-o fa-3x"></i> 찜 목록</a>
 					</li>
+					<li>
+						<a href="table.php"><i class="fa fa-table fa-3x"></i>구매이력</a>
+				</li>
                 </ul>
 
             </div>
@@ -103,7 +101,6 @@ echo $_SESSION['user_id'];
 								 <?php
 								date_default_timezone_set('Asia/Seoul');
 							//hw 제품 hw_no의 순서대로 db에서 값 불러와서 각 div에 값을 넣어줌.
-							$sql = 'select * from bod_hw order by hw_no desc';
 							$sql = 'select * from like_user where id="' . $user_id .'" order by hw_n desc' ;
 									$result = $db->query($sql);
 									while($row = $result->fetch_assoc())
@@ -121,10 +118,12 @@ echo $_SESSION['user_id'];
 													<?php		//판매완료 시 sale 숫자가 1이되고 판매 완료 버튼이 사라짐
 														 if($row2['sale'] == 0){
 													?>
-							<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row2['hw_no']?>'" style="cursor: pointer;">													 <?
-						} if($row2['sale'] == 1){
-													 ?>
-							<div class="panel panel-danger" onclick="location.href='inner_tab.php?sale_num=<?php echo $row2['hw_no']?>'" style="cursor: pointer;">															<?
+													<div class="panel panel-primary" onclick="location.href='inner_tab.php?sale_num=<?php echo $row2['hw_no']?>'" style="cursor: pointer;">
+														 <?
+												} if($row2['sale'] == 1){
+															?>
+													<div class="panel panel-danger" onclick="location.href='inner_tab.php?sale_num=<?php echo $row2['hw_no']?>'" style="cursor: pointer;">
+															<?
 														}
 															?>
 
